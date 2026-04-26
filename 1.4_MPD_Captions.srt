@@ -1,0 +1,1007 @@
+1
+00:00:00,033 --> 00:00:02,066
+money patterns decoded
+
+2
+00:00:03,266 --> 00:00:07,466
+every April over 100 million Americans check one number
+
+3
+00:00:07,500 --> 00:00:09,966
+and almost all of them celebrate
+
+4
+00:00:10,833 --> 00:00:13,666
+what if that Celebration is the problem
+
+5
+00:00:14,533 --> 00:00:21,066
+in 2024 the average federal tax refund hit $3,167
+
+6
+00:00:21,333 --> 00:00:23,433
+an all time record high
+
+7
+00:00:24,166 --> 00:00:27,466
+74% of all tax filers received one
+
+8
+00:00:27,933 --> 00:00:29,866
+most of them called it a win
+
+9
+00:00:30,633 --> 00:00:34,166
+almost none of them asked the right question about it
+
+10
+00:00:34,700 --> 00:00:36,733
+but here's what's actually happening
+
+11
+00:00:36,866 --> 00:00:39,866
+and once you see it you can't unsee it
+
+12
+00:00:40,333 --> 00:00:43,366
+but here's what almost nobody knows about that refund
+
+13
+00:00:43,700 --> 00:00:46,066
+including the people who just deposited one
+
+14
+00:00:46,666 --> 00:00:52,233
+the average refund in 2010 was $1,952
+
+15
+00:00:52,966 --> 00:00:57,933
+by 2024 it was 3,167
+
+16
+00:00:58,366 --> 00:01:01,833
+that's a 62% increase in 14 years
+
+17
+00:01:02,533 --> 00:01:06,266
+US wages grew 47% over the same period
+
+18
+00:01:06,766 --> 00:01:07,966
+the refund is growing
+
+19
+00:01:07,966 --> 00:01:10,233
+faster than the income it came from
+
+20
+00:01:10,566 --> 00:01:13,300
+every year Nerdwallet surveys filers
+
+21
+00:01:13,300 --> 00:01:15,366
+on what they plan to do with the money
+
+22
+00:01:15,866 --> 00:01:18,366
+37% say they'll pay bills
+
+23
+00:01:18,733 --> 00:01:21,033
+32% say they'll save it
+
+24
+00:01:21,266 --> 00:01:23,800
+21% say they'll make a big purchase
+
+25
+00:01:24,300 --> 00:01:27,533
+Only 11% say they'll invest it
+
+26
+00:01:27,833 --> 00:01:30,100
+but that refund money wasn't sitting somewhere
+
+27
+00:01:30,100 --> 00:01:32,733
+waiting for you it was working
+
+28
+00:01:33,033 --> 00:01:34,400
+just not for you
+
+29
+00:01:34,933 --> 00:01:39,033
+to understand why you need to go back to 1943
+
+30
+00:01:39,533 --> 00:01:42,133
+to understand why your money works this way
+
+31
+00:01:42,133 --> 00:01:44,666
+you need to go back to 1943
+
+32
+00:01:44,766 --> 00:01:46,266
+and an emergency decision
+
+33
+00:01:46,266 --> 00:01:48,466
+that was never meant to become permanent
+
+34
+00:01:49,066 --> 00:01:50,533
+before 1940
+
+35
+00:01:50,733 --> 00:01:54,433
+just 4% of Americans paid federal income tax
+
+36
+00:01:55,133 --> 00:01:58,933
+tax was something paid by the wealthy once a year
+
+37
+00:01:58,966 --> 00:02:01,766
+in a lump sum every March
+
+38
+00:02:02,066 --> 00:02:03,866
+then the war changed everything
+
+39
+00:02:04,500 --> 00:02:07,133
+the US government needed to fund a global war
+
+40
+00:02:07,133 --> 00:02:09,700
+immediately not at year end
+
+41
+00:02:09,700 --> 00:02:12,166
+but right now every paycheck
+
+42
+00:02:12,766 --> 00:02:15,033
+a young economist named Milton Friedman
+
+43
+00:02:15,033 --> 00:02:17,466
+was part of the team at the Treasury Department
+
+44
+00:02:17,466 --> 00:02:19,033
+that designed the solution
+
+45
+00:02:19,566 --> 00:02:20,966
+paycheck withholding
+
+46
+00:02:21,700 --> 00:02:23,966
+instead of paying your taxes at year end
+
+47
+00:02:24,066 --> 00:02:24,833
+your employer
+
+48
+00:02:24,833 --> 00:02:27,666
+would take the money before it ever reached your hands
+
+49
+00:02:28,233 --> 00:02:31,966
+the current Tax Payment Act was signed in 1943
+
+50
+00:02:32,133 --> 00:02:35,566
+written explicitly as a wartime emergency measure
+
+51
+00:02:36,166 --> 00:02:41,966
+by 1945 74% of Americans were paying federal income tax
+
+52
+00:02:42,233 --> 00:02:45,200
+up from 4% in just five years
+
+53
+00:02:45,666 --> 00:02:48,833
+the system was so effective at collecting money fast
+
+54
+00:02:48,900 --> 00:02:51,066
+that no one ever dismantled it
+
+55
+00:02:51,566 --> 00:02:53,266
+eighty three years later
+
+56
+00:02:53,366 --> 00:02:56,366
+it's still running exactly as designed
+
+57
+00:02:56,933 --> 00:02:58,566
+the economist who helped build it
+
+58
+00:02:58,566 --> 00:02:59,366
+later wrote that
+
+59
+00:02:59,366 --> 00:03:00,366
+prepayment
+
+60
+00:03:00,366 --> 00:03:03,266
+changed how citizens perceived their tax burden
+
+61
+00:03:03,633 --> 00:03:07,400
+that it had consequences no one had fully anticipated
+
+62
+00:03:07,866 --> 00:03:10,833
+but what does the design actually do to your money
+
+63
+00:03:11,266 --> 00:03:13,133
+so let's trace your money
+
+64
+00:03:13,366 --> 00:03:15,366
+from the first paycheck of January
+
+65
+00:03:15,366 --> 00:03:17,033
+to the day you get it back
+
+66
+00:03:17,433 --> 00:03:20,433
+because something interesting happens to it in between
+
+67
+00:03:21,366 --> 00:03:23,866
+the IRS withholds between 15
+
+68
+00:03:23,966 --> 00:03:26,700
+and 22% of your gross wages
+
+69
+00:03:26,700 --> 00:03:28,266
+before you see a cent
+
+70
+00:03:29,166 --> 00:03:32,200
+that money doesn't sit in a box with your name on it
+
+71
+00:03:32,633 --> 00:03:35,633
+it flows into the US Treasury's General Fund
+
+72
+00:03:35,866 --> 00:03:38,733
+and it finances daily government operations
+
+73
+00:03:39,933 --> 00:03:41,566
+in 2023
+
+74
+00:03:41,566 --> 00:03:46,400
+the US collected $4.7 trillion in federal tax revenue
+
+75
+00:03:46,866 --> 00:03:49,633
+eighty four percent of it came from payroll taxes
+
+76
+00:03:49,633 --> 00:03:54,133
+and individual withholding combined that same year
+
+77
+00:03:54,166 --> 00:03:59,333
+$334 billion was returned to filers as refunds
+
+78
+00:03:59,700 --> 00:04:02,166
+money that had been withheld in excess
+
+79
+00:04:02,966 --> 00:04:08,333
+the government held $334 billion of over withheld money
+
+80
+00:04:08,366 --> 00:04:10,733
+for an average of around six months
+
+81
+00:04:11,366 --> 00:04:16,333
+in 2023 the federal funds rate was 5.3%
+
+82
+00:04:16,933 --> 00:04:21,333
+that float represented approximately $8.9 billion
+
+83
+00:04:21,333 --> 00:04:23,266
+in interest value to the government
+
+84
+00:04:23,833 --> 00:04:26,266
+that figure is a conservative estimate
+
+85
+00:04:26,533 --> 00:04:32,733
+334 billion at 5.3% over roughly half a year
+
+86
+00:04:33,266 --> 00:04:34,666
+and the interest you
+
+87
+00:04:34,666 --> 00:04:36,600
+received on your over withheld money
+
+88
+00:04:37,033 --> 00:04:37,933
+zero
+
+89
+00:04:38,700 --> 00:04:42,366
+under federal law unless the IRS holds your refund
+
+90
+00:04:42,366 --> 00:04:45,366
+more than 45 days past the filing deadline
+
+91
+00:04:45,433 --> 00:04:46,866
+it owes you nothing
+
+92
+00:04:47,533 --> 00:04:49,466
+but here's where it gets personal
+
+93
+00:04:49,933 --> 00:04:53,633
+now let's price what that $264 a month
+
+94
+00:04:53,633 --> 00:04:56,366
+your money could actually be doing
+
+95
+00:04:57,133 --> 00:05:06,033
+$3,167 divided across 12 months is $264 a month
+
+96
+00:05:06,566 --> 00:05:09,866
+that's not a windfall that's a monthly decision
+
+97
+00:05:09,966 --> 00:05:11,366
+made automatically
+
+98
+00:05:11,633 --> 00:05:13,766
+to hand that amount to the government
+
+99
+00:05:13,766 --> 00:05:15,233
+instead of directing it yourself
+
+100
+00:05:16,266 --> 00:05:19,866
+let's say you're 25 years old and starting today
+
+101
+00:05:19,900 --> 00:05:24,233
+you redirect that $264 into an index fund
+
+102
+00:05:24,233 --> 00:05:26,933
+averaging 7% annual returns
+
+103
+00:05:27,533 --> 00:05:29,066
+after five years
+
+104
+00:05:29,166 --> 00:05:32,933
+seventeen thousand four hundred and fifty three dollars
+
+105
+00:05:33,366 --> 00:05:38,133
+after 10 years 45,604
+
+106
+00:05:38,500 --> 00:05:52,066
+after 20 years $163,174 after 30 years $321,207
+
+107
+00:05:52,866 --> 00:05:56,100
+you contributed 95,000 of your own dollars
+
+108
+00:05:56,100 --> 00:05:57,633
+over those 30 years
+
+109
+00:05:58,033 --> 00:06:03,966
+the remaining $226,000 came from compound growth alone
+
+110
+00:06:04,700 --> 00:06:07,400
+and if investing isn't where you are right now
+
+111
+00:06:07,500 --> 00:06:11,566
+that same 264 dollars applied monthly
+
+112
+00:06:11,566 --> 00:06:14,266
+to a 5 thousand dollar credit card balance
+
+113
+00:06:14,366 --> 00:06:16,366
+at 22.8%
+
+114
+00:06:16,366 --> 00:06:21,566
+APR saves you 662 dollars in interest this year
+
+115
+00:06:22,166 --> 00:06:23,066
+but the compound
+
+116
+00:06:23,066 --> 00:06:26,333
+table is not even the most important part of this story
+
+117
+00:06:26,833 --> 00:06:29,466
+and here's the part most tax videos skip
+
+118
+00:06:29,766 --> 00:06:32,800
+the refund is just one example of this
+
+119
+00:06:33,100 --> 00:06:34,833
+there are at least three others
+
+120
+00:06:34,833 --> 00:06:36,233
+running in your financial life
+
+121
+00:06:36,233 --> 00:06:40,366
+right now the mechanism is the same every time
+
+122
+00:06:40,633 --> 00:06:43,633
+the system produces a feeling of getting something
+
+123
+00:06:43,733 --> 00:06:46,733
+while the underlying math runs the other direction
+
+124
+00:06:47,333 --> 00:06:48,666
+credit card rewards
+
+125
+00:06:49,300 --> 00:06:50,566
+US card holders
+
+126
+00:06:50,566 --> 00:06:55,733
+received $52.6 billion in rewards in 2022
+
+127
+00:06:56,033 --> 00:06:57,266
+That same year
+
+128
+00:06:57,300 --> 00:07:01,566
+they paid $108 billion in credit card interest
+
+129
+00:07:02,233 --> 00:07:05,866
+roughly $2 in interest for every dollar in rewards
+
+130
+00:07:06,533 --> 00:07:08,000
+loyalty programs
+
+131
+00:07:08,233 --> 00:07:12,133
+30% of all earned points expire before they're redeemed
+
+132
+00:07:12,433 --> 00:07:15,100
+estimated unredeemed US loyalty points
+
+133
+00:07:15,100 --> 00:07:19,466
+at any given time $360 billion
+
+134
+00:07:20,100 --> 00:07:22,733
+and employer 401k matching
+
+135
+00:07:23,100 --> 00:07:25,033
+67% of employees
+
+136
+00:07:25,033 --> 00:07:28,200
+don't fully understand how to maximize their match
+
+137
+00:07:28,566 --> 00:07:31,400
+guaranteed returns left on the table
+
+138
+00:07:32,033 --> 00:07:35,533
+in every case the experience feels like winning
+
+139
+00:07:35,933 --> 00:07:37,533
+the math doesn't agree
+
+140
+00:07:38,100 --> 00:07:41,233
+but the US isn't alone in having income tax
+
+141
+00:07:41,666 --> 00:07:43,233
+what makes it unusual
+
+142
+00:07:43,300 --> 00:07:46,133
+is the system it built around collecting it
+
+143
+00:07:46,166 --> 00:07:49,066
+the US isn't the only country with income tax
+
+144
+00:07:49,466 --> 00:07:51,433
+but it might be the only major one
+
+145
+00:07:51,433 --> 00:07:53,833
+that turns the repayment into an annual event
+
+146
+00:07:53,833 --> 00:07:55,400
+you have to file for yourself
+
+147
+00:07:56,733 --> 00:08:02,233
+in Japan 95% of salary workers never file a tax return
+
+148
+00:08:03,366 --> 00:08:05,900
+their employer withholds and reconciles taxes
+
+149
+00:08:05,900 --> 00:08:08,800
+automatically the government does the math
+
+150
+00:08:08,866 --> 00:08:12,400
+the citizen does nothing in the United Kingdom
+
+151
+00:08:12,500 --> 00:08:15,966
+32.7 million workers are covered by P a
+
+152
+00:08:15,966 --> 00:08:16,833
+y E
+
+153
+00:08:17,033 --> 00:08:20,733
+pay as you earn no annual filing required
+
+154
+00:08:21,566 --> 00:08:22,866
+in Denmark over
+
+155
+00:08:22,866 --> 00:08:26,166
+90% of citizens receive a pre completed return
+
+156
+00:08:26,166 --> 00:08:28,466
+that requires no action at all
+
+157
+00:08:29,133 --> 00:08:33,033
+in Australia 87% of individual tax returns
+
+158
+00:08:33,033 --> 00:08:34,900
+are pre populated with employer
+
+159
+00:08:34,900 --> 00:08:36,766
+and bank data by the government
+
+160
+00:08:37,700 --> 00:08:39,433
+approximately 30 nations
+
+161
+00:08:39,433 --> 00:08:41,966
+have implemented automatic reconciliation
+
+162
+00:08:41,966 --> 00:08:44,033
+or pre filled return systems
+
+163
+00:08:44,966 --> 00:08:49,600
+the US is the only major OECD economy that has not
+
+164
+00:08:50,566 --> 00:08:51,466
+Americans spend
+
+165
+00:08:51,466 --> 00:08:55,866
+6.5 billion hours per year on federal tax compliance
+
+166
+00:08:56,766 --> 00:08:58,733
+the tax preparation industry
+
+167
+00:08:58,833 --> 00:09:02,133
+Turbotax HR Block Accountants
+
+168
+00:09:02,366 --> 00:09:07,000
+generates $15.4 billion annually from that requirement
+
+169
+00:09:07,566 --> 00:09:09,666
+that is not a technical limitation
+
+170
+00:09:10,066 --> 00:09:11,766
+that is a policy decision
+
+171
+00:09:12,366 --> 00:09:15,466
+and the reason most people never question any of this
+
+172
+00:09:15,700 --> 00:09:18,800
+is the same reason the refund still feels good
+
+173
+00:09:18,933 --> 00:09:21,466
+even after you understand what it is
+
+174
+00:09:22,166 --> 00:09:24,366
+so why does it still feel good
+
+175
+00:09:24,733 --> 00:09:26,233
+that's not an accident
+
+176
+00:09:27,066 --> 00:09:30,600
+the belief a tax refund is bonus money
+
+177
+00:09:30,700 --> 00:09:33,566
+extra separate from your regular income
+
+178
+00:09:34,433 --> 00:09:38,566
+the mechanism it is your income collected in excess
+
+179
+00:09:38,633 --> 00:09:41,866
+held for four months returned without interest
+
+180
+00:09:42,766 --> 00:09:44,733
+the feeling of different money
+
+181
+00:09:44,733 --> 00:09:46,866
+has a name in behavioral economics
+
+182
+00:09:47,233 --> 00:09:48,633
+mental accounting
+
+183
+00:09:49,533 --> 00:09:53,066
+Richard Thaler formally described it in 1985
+
+184
+00:09:53,266 --> 00:09:55,566
+the theory that the same dollar feels different
+
+185
+00:09:55,566 --> 00:09:57,266
+depending on how it arrives
+
+186
+00:09:58,100 --> 00:10:01,600
+loss aversion documented by Kahneman and Tversky
+
+187
+00:10:01,866 --> 00:10:02,966
+shows that people work
+
+188
+00:10:02,966 --> 00:10:05,566
+roughly twice as hard to avoid a loss
+
+189
+00:10:05,566 --> 00:10:07,666
+as to achieve an equivalent gain
+
+190
+00:10:08,533 --> 00:10:10,233
+the withholding system converts
+
+191
+00:10:10,233 --> 00:10:12,400
+what should feel like a monthly reduction
+
+192
+00:10:12,533 --> 00:10:14,400
+into a once a year win
+
+193
+00:10:15,366 --> 00:10:18,766
+studies suggest 60 to 70% of refund recipients
+
+194
+00:10:18,766 --> 00:10:20,600
+describe the check as a bonus
+
+195
+00:10:20,933 --> 00:10:22,633
+even people who intellectually
+
+196
+00:10:22,633 --> 00:10:24,333
+know it is their own money
+
+197
+00:10:25,100 --> 00:10:28,033
+the economist who helped design this system wrote that
+
+198
+00:10:28,033 --> 00:10:28,700
+prepayment
+
+199
+00:10:28,700 --> 00:10:31,666
+changed how citizens perceived the cost of government
+
+200
+00:10:32,133 --> 00:10:34,733
+it made the tax burden feel less visible
+
+201
+00:10:35,366 --> 00:10:37,566
+that was not a flaw in the design
+
+202
+00:10:38,066 --> 00:10:41,266
+that was the system working exactly as intended
+
+203
+00:10:42,300 --> 00:10:44,033
+you were never irrational
+
+204
+00:10:44,433 --> 00:10:46,133
+you were responding to a stimulus
+
+205
+00:10:46,133 --> 00:10:48,833
+engineered to produce exactly that response
+
+206
+00:10:49,633 --> 00:10:52,966
+but knowing this changes what you can do about it
+
+207
+00:10:53,466 --> 00:10:55,966
+the good news is this is fixable
+
+208
+00:10:56,133 --> 00:10:58,266
+and it takes less than 10 minutes
+
+209
+00:10:58,966 --> 00:11:01,800
+one form one free government tool
+
+210
+00:11:02,066 --> 00:11:04,433
+four steps step 1
+
+211
+00:11:04,466 --> 00:11:06,400
+get your most recent pay stub
+
+212
+00:11:07,233 --> 00:11:12,000
+step 2 go to IRS dot gov slash w four app
+
+213
+00:11:12,100 --> 00:11:16,033
+the IRS Tax Withholding Estimator free
+
+214
+00:11:16,066 --> 00:11:17,566
+no login required
+
+215
+00:11:18,466 --> 00:11:20,633
+step 3 update step 4
+
+216
+00:11:20,633 --> 00:11:24,366
+c on your W4 form that's the specific line that
+
+217
+00:11:24,366 --> 00:11:26,133
+controls additional withholding
+
+218
+00:11:27,066 --> 00:11:28,066
+step 4
+
+219
+00:11:28,266 --> 00:11:32,200
+submit the updated W4 to your HR or payroll department
+
+220
+00:11:32,666 --> 00:11:35,533
+it takes effect within one to two pay periods
+
+221
+00:11:36,500 --> 00:11:38,766
+the goal is not a zero refund
+
+222
+00:11:38,900 --> 00:11:42,033
+and definitely not to owe money at filing time
+
+223
+00:11:42,533 --> 00:11:44,933
+owing more than $1,000 at filing
+
+224
+00:11:44,933 --> 00:11:47,066
+can trigger under withholding penalties
+
+225
+00:11:47,833 --> 00:11:51,366
+the target is a refund of 200 to 500 dollars
+
+226
+00:11:51,533 --> 00:11:54,200
+what tax professionals call the wash zone
+
+227
+00:11:54,900 --> 00:11:55,533
+small enough
+
+228
+00:11:55,533 --> 00:11:58,133
+that the government isn't holding thousands of yours
+
+229
+00:11:58,700 --> 00:12:01,466
+large enough to confirm you haven't underwithheld
+
+230
+00:12:02,300 --> 00:12:04,966
+and that $264 a month
+
+231
+00:12:04,966 --> 00:12:06,766
+that comes back into your paycheck
+
+232
+00:12:07,233 --> 00:12:11,466
+put it in a high yield savings account at roughly 4.9%
+
+233
+00:12:11,700 --> 00:12:14,966
+and it earns you $155 this year
+
+234
+00:12:14,966 --> 00:12:18,266
+before you touch it or put it toward debt
+
+235
+00:12:18,566 --> 00:12:21,800
+or your emergency fund or your index fund
+
+236
+00:12:22,633 --> 00:12:24,666
+the point isn't the specific use
+
+237
+00:12:24,966 --> 00:12:27,133
+the point is that it's working for you
+
+238
+00:12:27,133 --> 00:12:30,066
+not the government you were never getting a gift
+
+239
+00:12:30,333 --> 00:12:33,300
+you were getting your own money back late
+
+240
+00:12:33,300 --> 00:12:34,533
+without interest
+
+241
+00:12:34,533 --> 00:12:37,700
+after it helped finance the operations of a government
+
+242
+00:12:37,700 --> 00:12:39,866
+you already pay taxes to
+
+243
+00:12:40,933 --> 00:12:42,933
+the goal was never the refund
+
+244
+00:12:43,266 --> 00:12:48,600
+it was the money $264 a month
+
+245
+00:12:48,666 --> 00:12:53,233
+working for you the way it was always supposed to
+
+246
+00:12:54,233 --> 00:12:57,266
+if this is the kind of pattern you want to understand
+
+247
+00:12:57,333 --> 00:13:00,233
+before it runs in the background of your finances
+
+248
+00:13:00,766 --> 00:13:03,400
+this channel posts every Saturday
+
+249
+00:13:03,900 --> 00:13:06,766
+next week credit card rewards
+
+250
+00:13:07,133 --> 00:13:09,600
+who they're actually designed to benefit
+
+251
+00:13:09,700 --> 00:13:12,233
+and why the math almost never works
+
+252
+00:13:12,233 --> 00:13:16,566
+the way the ads say it does money patterns decoded

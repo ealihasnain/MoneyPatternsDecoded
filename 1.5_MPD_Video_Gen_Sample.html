@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MPD · W01 · Tax Refunds Are Bad · VideoGen v5</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#DEDAD1}
+canvas{position:fixed;inset:0;width:100%;height:100%}
+#grain{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:.50;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.74' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:210px}
+#topbar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;
+  padding:9px 20px;background:linear-gradient(rgba(218,212,200,.95),transparent);transition:opacity .4s}
+body.fs #topbar{opacity:0;pointer-events:none}
+#vidtitle{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(42,37,32,.38);text-transform:uppercase}
+#topright{display:flex;align-items:center;gap:6px}
+#playtimer{font-family:'DM Mono',monospace;font-size:9px;color:rgba(42,37,32,.35);letter-spacing:.8px;min-width:52px}
+.tbtn{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1.8px;
+  padding:4px 11px;border-radius:2px;cursor:pointer;border:1px solid rgba(42,37,32,.18);
+  color:rgba(42,37,32,.50);background:rgba(255,255,255,.42);transition:all .15s;text-transform:uppercase}
+.tbtn:hover{background:rgba(42,37,32,.09);color:rgba(42,37,32,.78)}
+#chpanel{position:fixed;bottom:0;left:0;right:0;z-index:10;padding:7px 20px 12px;
+  background:linear-gradient(transparent,rgba(218,212,200,.97) 12px);transition:opacity .4s,transform .4s}
+body.fs #chpanel{opacity:0;pointer-events:none;transform:translateY(10px)}
+#vprog-wrap{height:2px;background:rgba(42,37,32,.10);border-radius:2px;margin-bottom:8px;cursor:pointer}
+#vprog-fill{height:100%;width:0%;background:#2DB89D;border-radius:2px;transition:width .25s linear}
+#chrow{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+#chrow::-webkit-scrollbar{display:none}
+.chbtn{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.8px;
+  padding:3px 9px;border-radius:2px;cursor:pointer;border:1px solid rgba(42,37,32,.12);
+  color:rgba(42,37,32,.40);background:rgba(255,255,255,.32);transition:all .15s;white-space:nowrap;flex-shrink:0}
+.chbtn:hover{color:rgba(42,37,32,.72);background:rgba(42,37,32,.07)}
+.chbtn.on{color:#fff;background:#2DB89D;border-color:#2DB89D}
+#kh{position:fixed;bottom:46px;right:18px;z-index:9;font-family:'DM Mono',monospace;
+  font-size:7px;letter-spacing:.6px;color:rgba(42,37,32,.20);line-height:2;text-align:right;pointer-events:none}
+body.fs #kh{opacity:0}
+#exoverlay{position:fixed;inset:0;z-index:98;background:rgba(42,37,32,.55);display:none}
+#exoverlay.show{display:block}
+#expanel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99;
+  background:#F5F1EA;border:1px solid rgba(42,37,32,.18);border-radius:4px;
+  padding:22px 26px;width:530px;max-height:88vh;overflow-y:auto;display:none;
+  box-shadow:0 12px 48px rgba(42,37,32,.22)}
+#expanel.show{display:block}
+#expanel h2{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:3px;color:rgba(42,37,32,.5);margin-bottom:14px;text-transform:uppercase}
+.exl{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;
+  letter-spacing:2px;color:rgba(42,37,32,.35);text-transform:uppercase}
+.ex-hrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.exsmall-btn{font-family:'Barlow Condensed',sans-serif;font-size:7px;font-weight:700;letter-spacing:1.5px;
+  padding:2px 9px;border-radius:2px;cursor:pointer;border:1px solid rgba(42,37,32,.15);
+  color:rgba(42,37,32,.45);background:rgba(255,255,255,.6);transition:all .12s;text-transform:uppercase}
+.exsmall-btn:hover{background:rgba(42,37,32,.09)}
+#ex-chlist{display:flex;flex-direction:column;gap:3px;margin-bottom:14px}
+.ex-ch{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:3px;cursor:pointer;
+  border:1px solid rgba(42,37,32,.10);background:rgba(255,255,255,.60);transition:all .12s;user-select:none}
+.ex-ch:hover{background:rgba(45,184,157,.07);border-color:rgba(45,184,157,.28)}
+.ex-ch.sel-on{background:rgba(45,184,157,.11);border-color:rgba(45,184,157,.50)}
+.ex-ch input[type=checkbox]{accent-color:#2DB89D;cursor:pointer;width:13px;height:13px;flex-shrink:0;pointer-events:none}
+.ex-ch-num{font-family:'DM Mono',monospace;font-size:9px;color:rgba(42,37,32,.4);min-width:22px}
+.ex-ch-name{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;color:#2A2520;flex:1}
+.ex-ch-dur{font-family:'DM Mono',monospace;font-size:8px;color:rgba(42,37,32,.35)}
+.ex-opt-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.ex-opt-group{display:flex;flex-direction:column;gap:4px;flex:1;min-width:120px}
+.ex-opt-group select{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  padding:4px 8px;border-radius:3px;border:1px solid rgba(42,37,32,.18);background:#fff;color:#2A2520;cursor:pointer}
+#ex-note{font-family:'DM Mono',monospace;font-size:8px;color:rgba(42,37,32,.38);
+  line-height:1.7;margin-bottom:10px;padding:7px 9px;background:rgba(42,37,32,.04);border-radius:3px}
+#ex-progress{height:3px;background:rgba(42,37,32,.10);border-radius:2px;margin:8px 0;display:none}
+#ex-prog-fill{height:100%;width:0;background:#2DB89D;border-radius:2px;transition:width .12s}
+#ex-status{font-family:'DM Mono',monospace;font-size:9px;color:rgba(42,37,32,.55);margin-bottom:10px;
+  display:none;line-height:1.6;white-space:pre-line}
+.ex-btn{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;
+  padding:7px 16px;border-radius:3px;cursor:pointer;border:none;text-transform:uppercase;transition:all .15s}
+#ex-start-btn{background:#2DB89D;color:#fff}
+#ex-start-btn:hover:not(:disabled){background:#1E8A75}
+#ex-start-btn:disabled{background:rgba(42,37,32,.14);color:rgba(42,37,32,.32);cursor:not-allowed}
+#ex-close-btn{background:rgba(42,37,32,.08);color:rgba(42,37,32,.6)}
+#ex-close-btn:hover:not(:disabled){background:rgba(42,37,32,.15)}
+.ex-btn-row{display:flex;gap:8px;justify-content:flex-end}
+</style>
+</head>
+<body>
+<div id="grain"></div>
+<canvas id="c"></canvas>
+<div id="topbar">
+  <div id="vidtitle">MPD · W01 · Why Tax Refunds Are Actually Bad</div>
+  <div id="topright">
+    <div id="playtimer">0:00 / 13:17</div>
+    <button class="tbtn" id="playbtn" onclick="togglePlay()">▶ PLAY</button>
+    <button class="tbtn" id="speedbtn" onclick="cycleSpeed()">1× SPEED</button>
+    <button class="tbtn" id="musicbtn" onclick="toggleMuteMusic()">♪ MUSIC</button>
+    <button class="tbtn" onclick="openExport()">⬇ EXPORT</button>
+    <button class="tbtn" id="exportallbtn" onclick="quickExportAll()">⬇ ALL</button>
+    <button class="tbtn" id="exportmergebtn" onclick="quickExportCombined()">⬇ MERGE</button>
+    <button class="tbtn" onclick="toggleFS()">⛶ FULL</button>
+  </div>
+</div>
+<div id="chpanel">
+  <div id="vprog-wrap"><div id="vprog-fill"></div></div>
+  <div id="chrow"></div>
+</div>
+<div id="kh">SPACE=play/pause · F=fullscreen · E=export · A=export all (separate) · M=music · 1-9=chapter</div>
+<div id="exoverlay" onclick="closeExport()"></div>
+<div id="expanel">
+  <h2>Export Video Chapters</h2>
+  <div class="ex-hrow">
+    <div class="exl">Select Chapters</div>
+    <div style="display:flex;gap:5px">
+      <button class="exsmall-btn" onclick="selAllEx(true)">ALL</button>
+      <button class="exsmall-btn" onclick="selAllEx(false)">NONE</button>
+    </div>
+  </div>
+  <div id="ex-chlist"></div>
+  <div class="exl" style="margin-bottom:8px">Options</div>
+  <div class="ex-opt-row">
+    <div class="ex-opt-group">
+      <div class="exl" style="margin-bottom:2px">Resolution</div>
+      <select id="ex-res">
+        <option value="720">HD 720p</option>
+        <option value="1080" selected>FHD 1080p</option>
+        <option value="2160">4K UHD</option>
+      </select>
+    </div>
+    <div class="ex-opt-group">
+      <div class="exl" style="margin-bottom:2px">Frame Rate</div>
+      <select id="ex-fps">
+        <option value="30" selected>30 fps</option>
+        <option value="60">60 fps</option>
+      </select>
+    </div>
+  </div>
+  <div id="ex-note">⏱ Export engine uses a Web Worker timer — frame submission continues accurately even when switching tabs or apps. Combined mode outputs all selected chapters as a single continuous file for direct CapCut import. Separate mode outputs one file per chapter.</div>
+  <div id="ex-progress"><div id="ex-prog-fill"></div></div>
+  <div id="ex-status"></div>
+  <div class="ex-btn-row">
+    <button class="ex-btn" id="ex-close-btn" onclick="closeExport()">Close</button>
+    <button class="ex-btn" id="ex-exportall-btn" onclick="selAllEx(true);startExport(false)" style="background:#C8950A;color:#fff">Export ALL Separate</button>
+    <button class="ex-btn" id="ex-merge-btn" onclick="startExport(true)" style="background:#2DB89D;color:#fff">Merge to One File</button>
+    <button class="ex-btn" id="ex-start-btn" onclick="startExport(false)">Export Selected</button>
+  </div>
+</div>
+<script>
+'use strict';
+const VIDEO_WEEK='01',TOPIC_SHORT='TaxRefund',LOOP_FPS=30,CY_PH=0.60,CP_Y=0.32;
+const C={paper:'#E4DDD0',paper2:'#D9D1C3',paperL:'#EEEAE2',ink:'#2A2520',ink2:'#3D3830',
+  teal:'#2DB89D',tealD:'#1E8A75',tealL:'#5CCFBA',red:'#E63946',redD:'#B02830',
+  amber:'#F5C518',amberD:'#C8950A',amberL:'#F9D650',slate:'#8BA8B5',gray:'#6B6458',grayL:'#9E958A',white:'#FAF8F4'};
+const CHAPTERS=[
+  {id:0,name:'The Celebration',       short:'HOOK',    start:0.033,   end:40.333},
+  {id:1,name:'Bigger Every Year',      short:'SCALE',   start:40.333,  end:102.133},
+  {id:2,name:'Emergency. Never Ended.',short:'ORIGIN',  start:102.133, end:191.266},
+  {id:3,name:"Your Money's Other Job", short:'MECH',    start:191.266, end:289.933},
+  {id:4,name:'The 30-Year Number',     short:'COST',    start:289.933, end:386.833},
+  {id:5,name:'Same Trap, Three Forms', short:'PATTERN', start:386.833, end:466.166},
+  {id:6,name:'95% Never File',         short:'INTL',    start:466.166, end:562.166},
+  {id:7,name:'Designed to Feel Good',  short:'PSYCH',   start:562.166, end:653.466},
+  {id:8,name:'Fix It in 10 Minutes',   short:'ACTION',  start:653.466, end:796.566}
+];
+const TOTAL_DUR=796.566;
+const PHRASES=[
+  [[.08,.22,'EVERY APRIL','100 million Americans celebrate'],[.22,.44,'$3,167','all-time record refund · 2024'],[.44,.66,'74% GET ONE','most called it a win'],[.66,1,'RIGHT QUESTION','almost none asked it']],
+  [[0,.22,'GROWING','refund outpacing wages'],[.22,.48,'$1,952 → $3,167','62% growth in 14 years'],[.48,.73,'WHAT THEY PLAN','save · pay bills · spend'],[.73,1,'11% INVEST','only eleven percent']],
+  [[0,.22,'1943','a wartime emergency'],[.22,.42,'JUST 4%','Americans paid tax before then'],[.42,.65,'NEVER REPEALED','designed as temporary'],[.65,1,'83 YEARS','still running exactly as designed']],
+  [[0,.22,'YOUR PAYCHECK','15–22% withheld first'],[.22,.46,'$334 BILLION','over-withheld in one year'],[.46,.72,'GOVT BENEFIT','~$8.9 billion interest value'],[.72,1,'ZERO','interest you receive: $0']],
+  [[0,.18,'$264/MONTH','your money redirected monthly'],[.18,.40,'5 YEARS','$17,453 at 7% annual'],[.40,.62,'30 YEARS','THREE HUNDRED TWENTY-ONE THOUSAND'],[.62,.80,'$226,167','from compound growth alone'],[.80,1,'OR','$662 saved on credit card interest']],
+  [[0,.26,'SAME TRAP','three other versions'],[.26,.52,'CREDIT CARDS','$52.6B rewards · $108B interest'],[.52,.76,'LOYALTY POINTS','$360B unredeemed'],[.76,1,'401K MATCH','67% don\'t maximize it']],
+  [[0,.20,'95% NEVER FILE','Japan — automatic tax'],[.20,.46,'30 NATIONS','automatic reconciliation'],[.46,.70,'US ALONE','only major OECD holdout'],[.70,1,'POLICY DECISION','not a technical limitation']],
+  [[0,.25,'BELIEF','bonus money — extra income'],[.25,.56,'MECHANISM','your income · returned late · no interest'],[.56,.80,'MENTAL ACCOUNTING','Thaler 1985 — same dollar feels different'],[.80,1,'DESIGNED','the system working exactly as intended']],
+  [[0,.20,'FIXABLE','less than 10 minutes'],[.20,.46,'4 STEPS','one form · one free tool'],[.46,.68,'WASH ZONE','$200–$500 target refund'],[.68,.86,'$264/MONTH','working for you now'],[.86,1,'EVERY SATURDAY','money patterns decoded']]
+];
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+let W,H,paperCache=null;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;paperCache=null;}
+window.addEventListener('resize',resize);resize();
+function buildPaper(){const o=document.createElement('canvas');o.width=W;o.height=H;const g=o.getContext('2d');const gr=g.createRadialGradient(W*.5,H*.48,0,W*.5,H*.58,W*.72);gr.addColorStop(0,'#EDE8DF');gr.addColorStop(.6,'#E4DDD0');gr.addColorStop(1,'#D8D1C4');g.fillStyle=gr;g.fillRect(0,0,W,H);paperCache=o;}
+function drawPaper(){if(!paperCache)buildPaper();ctx.drawImage(paperCache,0,0);}
+function drawGrid(){ctx.save();ctx.strokeStyle='rgba(80,70,50,.048)';ctx.lineWidth=.5;const s=Math.max(60,Math.floor(W/22));for(let x=0;x<W;x+=s){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H*.92);ctx.stroke();}for(let y=0;y<H*.92;y+=s){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}ctx.restore();}
+function shadowHalo(){ctx.shadowColor='rgba(255,255,255,0.55)';ctx.shadowBlur=6;}
+function clearShadow(){ctx.shadowColor='transparent';ctx.shadowBlur=0;}
+function spring(t){return 1-Math.exp(-t*8)*Math.cos(t*12)*.85;}
+function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v));}
+function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
+function rr(x,y,w,h,r){r=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+function phA(cs,s,e,f){if(cs<s||cs>=e)return 0;f=f||0.35;return clamp(Math.min((cs-s)/f,(e-cs)/f),0,1);}
+function apR(cs,s,d){return ease(clamp((cs-s)/(d||0.5),0,1));}
+function headline(t,x,y,o){const sz=(o&&o.sz)||clamp(H*.072,34,90),col=(o&&o.col)||C.ink;ctx.save();ctx.font=`900 ${sz}px 'Barlow Condensed',sans-serif`;ctx.textBaseline='alphabetic';ctx.textAlign=(o&&o.center)?'center':'left';ctx.fillStyle=col;if(col!==C.ink&&col!==C.ink2)shadowHalo();ctx.fillText(t,x,y);clearShadow();ctx.restore();}
+function stat(t,cx,cy,col,sz){col=col||C.red;sz=sz||clamp(H*.14,60,180);ctx.save();ctx.font=`900 ${sz*2.2}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=C.ink;ctx.globalAlpha=.03;ctx.fillText(t,cx,cy);ctx.globalAlpha=1;ctx.font=`900 ${sz}px 'Barlow Condensed',sans-serif`;ctx.fillStyle=(col===C.amber)?C.amberD:col;if(col!==C.ink)shadowHalo();ctx.fillText(t,cx,cy);clearShadow();ctx.restore();}
+// numStat — count-up wrapper. target=final number, pfx/sfx=prefix/suffix strings,
+// cp=entry progress 0→1 (pass the same sp used to compute sz).
+// Counts to target through first 85% of entry; snaps to final value thereafter.
+function numStat(target,pfx,sfx,cx,cy,col,sz,cp){
+  const t=clamp(cp/0.85,0,1);
+  const counted=cp>=0.85?target:Math.round(target*Math.pow(t,0.6));
+  const fmtd=pfx+(counted>=1000?counted.toLocaleString():String(counted))+sfx;
+  stat(fmtd,cx,cy,col,sz);
+}
+function lbl(t,x,y,o){const sz=(o&&o.sz)||clamp(H*.018,9,18),col=(o&&o.col)||C.gray;ctx.save();ctx.font=`${(o&&o.w)||500} ${sz}px 'Barlow',sans-serif`;ctx.textAlign=(o&&o.align)||'left';ctx.textBaseline='alphabetic';ctx.fillStyle=col;if(col!==C.ink&&col!==C.gray)shadowHalo();ctx.fillText(t,x,y);clearShadow();ctx.restore();}
+function mono(t,x,y,o){const sz=(o&&o.sz)||clamp(H*.012,8,11),col=(o&&o.col)||C.grayL,al=(o&&o.alpha)||.42;ctx.save();ctx.font=`${(o&&o.w)||400} ${sz}px 'DM Mono',monospace`;ctx.textAlign=(o&&o.align)||'left';ctx.textBaseline='alphabetic';ctx.globalAlpha=al;ctx.fillStyle=col;ctx.fillText(t,x,y);ctx.globalAlpha=1;ctx.restore();}
+function rule(x1,y,x2,col,lw){ctx.save();ctx.strokeStyle=col||C.grayL;ctx.lineWidth=lw||1;ctx.globalAlpha=.3;ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);ctx.stroke();ctx.globalAlpha=1;ctx.restore();}
+function arrow(x,y,sz,col,dir){ctx.save();ctx.fillStyle=col||C.teal;sz=sz||12;shadowHalo();ctx.beginPath();if(dir==='right'||!dir){ctx.moveTo(x,y-sz*.4);ctx.lineTo(x+sz*.6,y);ctx.lineTo(x,y+sz*.4);ctx.lineTo(x,y+sz*.15);ctx.lineTo(x-sz*.4,y+sz*.15);ctx.lineTo(x-sz*.4,y-sz*.15);ctx.lineTo(x,y-sz*.15);}ctx.closePath();ctx.fill();clearShadow();ctx.restore();}
+function drawStatBox(val,label,x,y,w,h,col,a){ctx.save();ctx.globalAlpha=a||1;const rgba=col===C.teal?'45,184,157':col===C.red?'230,57,70':col===C.amberD?'200,149,10':'107,100,88';ctx.fillStyle=`rgba(${rgba},.07)`;rr(x,y,w,h,5);ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=1.5;shadowHalo();rr(x,y,w,h,5);ctx.stroke();clearShadow();const vsz=clamp(H*.040,18,48);ctx.font=`900 ${vsz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=col;shadowHalo();ctx.fillText(val,x+w/2,y+h*.56);clearShadow();lbl(label,x+w/2,y+h*.84,{align:'center',col:C.gray,sz:clamp(H*.015,7,15)});ctx.restore();}
+function draw2StatBoxes(v1,l1,v2,l2,c1,c2,a){const bw=W*.36,bh=H*.10,gap=W*.04,x1=(W-bw*2-gap)/2,x2=x1+bw+gap,y=H*CY_PH-bh/2;drawStatBox(v1,l1,x1,y,bw,bh,c1,a);drawStatBox(v2,l2,x2,y,bw,bh,c2,a);}
+function drawChannelCard(a,cy){cy=cy||H*CY_PH;ctx.save();ctx.globalAlpha=a;const pw=W*.64,ph=H*.30,px=(W-pw)/2,py=cy-H*.15;ctx.fillStyle=C.paper;rr(px,py,pw,ph,8);ctx.fill();ctx.fillStyle='rgba(42,37,32,.035)';rr(px,py,pw,ph,8);ctx.fill();ctx.strokeStyle=C.teal;ctx.lineWidth=1.5;shadowHalo();rr(px,py,pw,ph,8);ctx.stroke();clearShadow();mono('MPD · W01 · FINANCIAL EDUCATION',W*.5,py+H*.034,{align:'center',alpha:.4,sz:clamp(H*.012,8,11)});const n1=clamp(H*.064,28,80),n2=clamp(H*.056,24,70);ctx.font=`900 ${n1}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=C.ink;ctx.fillText('MONEY PATTERNS',W*.5,py+H*.092);ctx.font=`900 ${n2}px 'Barlow Condensed',sans-serif`;ctx.fillStyle=C.teal;shadowHalo();ctx.fillText('DECODED',W*.5,py+H*.092+n1*1.06);clearShadow();const ry=py+H*.092+n1*1.22;ctx.strokeStyle=C.teal;ctx.lineWidth=.8;ctx.globalAlpha=a*.22;ctx.beginPath();ctx.moveTo(W*.5-pw*.22,ry);ctx.lineTo(W*.5+pw*.22,ry);ctx.stroke();ctx.globalAlpha=a;lbl('@moneypatternsdecoded',W*.5,ry+H*.030,{align:'center',col:C.gray,sz:clamp(H*.020,9,20)});mono('financial patterns · decoded · every saturday',W*.5,ry+H*.054,{align:'center',alpha:.37,sz:clamp(H*.012,8,11)});ctx.restore();}
+function wrapText(text,maxW,sz,weight){weight=weight||600;ctx.font=`${weight} ${sz}px 'Barlow Condensed',sans-serif`;const words=text.split(' ');let line='',lines=[];for(const w of words){const t=line?line+' '+w:w;if(ctx.measureText(t).width>maxW&&line){lines.push(line);line=w;}else line=t;}if(line)lines.push(line);return lines;}
+function drawInfoCard(lines,cx,cy,a,col){col=col||C.teal;const pw=W*.68,lh=H*.058,ph=lines.length*lh+H*.065,px=cx-pw/2,py=cy-ph/2;ctx.save();ctx.globalAlpha=a;ctx.fillStyle=C.paper;rr(px,py,pw,ph,6);ctx.fill();ctx.fillStyle='rgba(42,37,32,.035)';rr(px,py,pw,ph,6);ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=1.5;shadowHalo();rr(px,py,pw,ph,6);ctx.stroke();clearShadow();lines.forEach((ln,i)=>{const sz=i===0?clamp(H*.036,16,44):clamp(H*.022,10,22);const wrapped=wrapText(ln,pw*.88,sz,i===0?900:600);wrapped.forEach((wl,wi)=>{ctx.font=`${i===0?900:600} ${sz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=i===0?col:C.ink2;if(i===0)shadowHalo();ctx.fillText(wl,cx,py+H*.040+sz+i*lh+wi*(sz*1.3));if(i===0)clearShadow();});});ctx.restore();}
+
+// ── PERSON PORTRAITS & VISUAL OVERLAYS ───────────
+// Preload Wikipedia Commons photos (CORS-enabled)
+const IMGS={};
+(function(){
+  const srcs={
+    friedman:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Milton_Friedman_%28cropped%29.jpg/200px-Milton_Friedman_%28cropped%29.jpg',
+    thaler:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Richard_Thaler.jpg/200px-Richard_Thaler.jpg',
+    kahneman:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Daniel_Kahneman_%28cropped%29.jpg/200px-Daniel_Kahneman_%28cropped%29.jpg',
+    tversky:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Amos_Tversky.jpg/200px-Amos_Tversky.jpg'
+  };
+  Object.entries(srcs).forEach(([k,url])=>{
+    const img=new Image();img.crossOrigin='anonymous';
+    img.onload=()=>{IMGS[k]=img;};img.onerror=()=>{IMGS[k]=null;};img.src=url;
+  });
+})();
+
+// Circular clipped portrait — falls back to monogram if image not loaded/failed
+function drawPortrait(key,name,cx,cy,r,a){
+  ctx.save();ctx.globalAlpha=a;
+  // Clip circle
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();
+  const img=IMGS[key];
+  if(img&&img.complete&&img.naturalWidth>0){
+    const sc=(r*2)/Math.min(img.naturalWidth,img.naturalHeight);
+    ctx.drawImage(img,cx-img.naturalWidth*sc/2,cy-img.naturalHeight*sc/2,img.naturalWidth*sc,img.naturalHeight*sc);
+  } else {
+    const gr=ctx.createRadialGradient(cx,cy-r*.2,0,cx,cy,r);
+    gr.addColorStop(0,C.paperL);gr.addColorStop(1,C.paper2);
+    ctx.fillStyle=gr;ctx.fillRect(cx-r,cy-r,r*2,r*2);
+    const isz=r*.7;ctx.font=`900 ${isz}px 'Barlow Condensed',sans-serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=C.grayL;ctx.fillText(name.charAt(0).toUpperCase(),cx,cy);
+  }
+  ctx.restore();
+  // Ring border
+  ctx.save();ctx.globalAlpha=a;ctx.strokeStyle=C.paper;ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();ctx.restore();
+}
+
+// Full person card: portrait + name + role + year
+function drawPersonCard(key,name,role,year,cx,cy,a,col){
+  col=col||C.teal;
+  const pr=clamp(H*.050,22,56);
+  const cw=clamp(W*.20,130,240),ch=pr*2+clamp(H*.10,48,96);
+  const px=cx-cw/2,py=cy-ch/2;
+  ctx.save();ctx.globalAlpha=a;
+  ctx.fillStyle=C.paper;rr(px,py,cw,ch,7);ctx.fill();
+  ctx.fillStyle='rgba(42,37,32,.032)';rr(px,py,cw,ch,7);ctx.fill();
+  ctx.strokeStyle=col;ctx.lineWidth=1.5;shadowHalo();rr(px,py,cw,ch,7);ctx.stroke();clearShadow();
+  const imy=py+pr+clamp(H*.014,8,14);
+  drawPortrait(key,name,cx,imy,pr,a);
+  const nsz=clamp(H*.020,9,20);
+  ctx.font=`900 ${nsz}px 'Barlow Condensed',sans-serif`;
+  ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=col;shadowHalo();
+  ctx.fillText(name.toUpperCase(),cx,imy+pr+nsz*1.45);clearShadow();
+  const rsz=clamp(H*.014,7,14);
+  lbl(role,cx,imy+pr+nsz*1.45+rsz*1.6,{align:'center',col:C.gray,sz:rsz});
+  if(year)mono(year,cx,py+ch-clamp(H*.009,5,9),{align:'center',alpha:.45,sz:clamp(H*.012,7,11)});
+  ctx.restore();
+}
+
+// ── CANVAS-DRAWN FLAGS (emoji unreliable on canvas — always use primitives) ──
+// drawFlag(code, cx, cy, w, h) — draws a simplified but recognisable national flag
+// Supported codes: 'JP','GB','DK','AU','US'
+// All shapes use basic canvas fills/strokes — no font/emoji dependency.
+function drawFlag(code,cx,cy,fw,fh){
+  const px=cx-fw/2,py=cy-fh/2;
+  ctx.save();
+  // Clip to flag rectangle with slight rounding
+  ctx.beginPath();ctx.roundRect(px,py,fw,fh,2);ctx.clip();
+  switch(code){
+    case 'JP':{// White field + red disc
+      ctx.fillStyle='#fff';ctx.fillRect(px,py,fw,fh);
+      ctx.fillStyle='#BC002D';ctx.beginPath();ctx.arc(cx,cy,fh*.28,0,Math.PI*2);ctx.fill();break;}
+    case 'GB':{// Union Jack — blue field, white/red diagonal & cross
+      ctx.fillStyle='#012169';ctx.fillRect(px,py,fw,fh);
+      // White saltire (diagonal)
+      ctx.strokeStyle='#fff';ctx.lineWidth=fh*.22;
+      ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+fw,py+fh);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(px+fw,py);ctx.lineTo(px,py+fh);ctx.stroke();
+      // Red saltire (thinner, on top)
+      ctx.strokeStyle='#C8102E';ctx.lineWidth=fh*.10;
+      ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+fw,py+fh);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(px+fw,py);ctx.lineTo(px,py+fh);ctx.stroke();
+      // White cross
+      ctx.fillStyle='#fff';
+      ctx.fillRect(px,cy-fh*.15,fw,fh*.30);ctx.fillRect(cx-fw*.12,py,fw*.24,fh);
+      // Red cross
+      ctx.fillStyle='#C8102E';
+      ctx.fillRect(px,cy-fh*.10,fw,fh*.20);ctx.fillRect(cx-fw*.08,py,fw*.16,fh);break;}
+    case 'DK':{// Nordic cross — red field + white cross (vertical at 37%)
+      ctx.fillStyle='#C60C30';ctx.fillRect(px,py,fw,fh);
+      const vx=px+fw*.37,bw=fw*.10,bh=fh*.18;
+      ctx.fillStyle='#fff';
+      ctx.fillRect(px,cy-bh/2,fw,bh);// horizontal bar
+      ctx.fillRect(vx-bw/2,py,bw,fh);// vertical bar
+      break;}
+    case 'AU':{// Blue ensign — blue field + simplified Union Jack (top-left) + stars
+      ctx.fillStyle='#00008B';ctx.fillRect(px,py,fw,fh);
+      // Simplified Union Jack in top-left quarter
+      const ujW=fw*.42,ujH=fh*.50;
+      ctx.save();ctx.rect(px,py,ujW,ujH);ctx.clip();
+      // UJ white saltire
+      ctx.strokeStyle='#fff';ctx.lineWidth=ujH*.22;
+      ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+ujW,py+ujH);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(px+ujW,py);ctx.lineTo(px,py+ujH);ctx.stroke();
+      ctx.strokeStyle='#C8102E';ctx.lineWidth=ujH*.10;
+      ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+ujW,py+ujH);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(px+ujW,py);ctx.lineTo(px,py+ujH);ctx.stroke();
+      ctx.fillStyle='#fff';ctx.fillRect(px,py+ujH/2-ujH*.15,ujW,ujH*.30);ctx.fillRect(px+ujW/2-ujW*.10,py,ujW*.20,ujH);
+      ctx.fillStyle='#C8102E';ctx.fillRect(px,py+ujH/2-ujH*.10,ujW,ujH*.20);ctx.fillRect(px+ujW/2-ujW*.07,py,ujW*.14,ujH);
+      ctx.restore();
+      // 7-pointed Commonwealth Star (bottom-left)
+      _drawStar(ctx,px+fw*.27,py+fh*.72,fh*.085,7,'#fff');
+      // Southern Cross — 5 stars (right side)
+      _drawStar(ctx,px+fw*.72,py+fh*.25,fh*.07,4,'#fff');
+      _drawStar(ctx,px+fw*.88,py+fh*.45,fh*.05,4,'#fff');
+      _drawStar(ctx,px+fw*.78,py+fh*.65,fh*.07,4,'#fff');
+      _drawStar(ctx,px+fw*.64,py+fh*.55,fh*.05,4,'#fff');
+      _drawStar(ctx,px+fw*.68,py+fh*.78,fh*.04,4,'#fff');
+      break;}
+    case 'US':{// 13 stripes red/white + blue canton
+      const sc=fh/13;
+      for(let i=0;i<13;i++){ctx.fillStyle=i%2===0?'#B22234':'#fff';ctx.fillRect(px,py+i*sc,fw,sc);}
+      // Blue canton (upper-left, 40% wide × 54% tall)
+      ctx.fillStyle='#3C3B6E';ctx.fillRect(px,py,fw*.40,fh*.54);
+      // 5×4 + 4×4 grid of white stars (simplified as dots)
+      const sw=fw*.40/6,sh=fh*.54/5;
+      for(let r=0;r<5;r++)for(let c=0;c<(r%2===0?5:4);c++){
+        const sx=px+sw*(c+(r%2===0?.5:1)),sy=py+sh*(r+.7);
+        ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(sx,sy,fw*.015,0,Math.PI*2);ctx.fill();}
+      break;}
+    default:{// Fallback: white rect with country code text
+      ctx.fillStyle='rgba(255,255,255,.3)';ctx.fillRect(px,py,fw,fh);
+      ctx.font=`700 ${fh*.4}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=C.grayL;ctx.fillText(code,cx,cy);}
+  }
+  ctx.restore();
+  // Thin border
+  ctx.save();ctx.strokeStyle='rgba(42,37,32,.15)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.roundRect(px,py,fw,fh,2);ctx.stroke();ctx.restore();
+}
+// Helper — draw a simple N-pointed star (used for AU stars)
+function _drawStar(ctx,cx,cy,r,points,col){
+  ctx.save();ctx.fillStyle=col;ctx.beginPath();
+  for(let i=0;i<points*2;i++){
+    const a=Math.PI/points*i-Math.PI/2,rr2=i%2===0?r:r*.45;
+    i===0?ctx.moveTo(cx+Math.cos(a)*rr2,cy+Math.sin(a)*rr2):ctx.lineTo(cx+Math.cos(a)*rr2,cy+Math.sin(a)*rr2);
+  }
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+
+// Country flag + name panel (single country spotlight)
+// `code` = ISO code string: 'JP','GB','DK','AU','US' — drawn via drawFlag(), NOT emoji
+function drawCountrySpotlight(code,country,stat,detail,cx,cy,a,col){
+  col=col||C.teal;
+  const cw=clamp(W*.54,300,580),ch=clamp(H*.22,110,220),px=cx-cw/2,py=cy-ch/2;
+  ctx.save();ctx.globalAlpha=a;
+  ctx.fillStyle=C.paper;rr(px,py,cw,ch,7);ctx.fill();
+  ctx.fillStyle=`rgba(${col===C.teal?'45,184,157':col===C.red?'230,57,70':'42,37,32'},.05)`;
+  rr(px,py,cw,ch,7);ctx.fill();
+  ctx.strokeStyle=col;ctx.lineWidth=1.5;shadowHalo();rr(px,py,cw,ch,7);ctx.stroke();clearShadow();
+  // Canvas-drawn flag (replaces unreliable emoji)
+  const flagW=clamp(cw*.28,80,160),flagH=flagW*.62;
+  drawFlag(code,px+cw*.20,cy,flagW,flagH);
+  // Divider
+  ctx.strokeStyle=col;ctx.lineWidth=1;ctx.globalAlpha=a*.20;
+  ctx.beginPath();ctx.moveTo(px+cw*.36,py+ch*.14);ctx.lineTo(px+cw*.36,py+ch*.86);ctx.stroke();
+  ctx.globalAlpha=a;
+  // Country name
+  const nsz=clamp(H*.036,16,40);
+  ctx.font=`900 ${nsz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle=col;shadowHalo();
+  ctx.fillText(country,px+cw*.40,cy-nsz*.5);clearShadow();
+  // Stat
+  if(stat){const ssz=clamp(H*.028,12,30);lbl(stat,px+cw*.40,cy+ssz*1.0,{col:C.ink2,sz:ssz,w:700});}
+  // Detail
+  if(detail){const dsz=clamp(H*.017,8,16);lbl(detail,px+cw*.40,cy+clamp(H*.075,40,70),{col:C.gray,sz:dsz});}
+  ctx.restore();
+}
+
+// Brand badge — for institutions (NerdWallet, IRS, TurboTax etc.)
+function drawBrandBadge(name,tagline,cx,cy,a,col){
+  col=col||C.tealD;
+  const bw=clamp(W*.28,160,300),bh=clamp(H*.072,36,70);
+  const px=cx-bw/2,py=cy-bh/2;
+  ctx.save();ctx.globalAlpha=a;
+  ctx.fillStyle='rgba(255,255,255,.55)';rr(px,py,bw,bh,5);ctx.fill();
+  ctx.strokeStyle=col;ctx.lineWidth=1.2;shadowHalo();rr(px,py,bw,bh,5);ctx.stroke();clearShadow();
+  const nsz=clamp(H*.022,10,22);
+  ctx.font=`900 ${nsz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=col;shadowHalo();
+  ctx.fillText(name,cx,py+bh*.54);clearShadow();
+  if(tagline)lbl(tagline,cx,py+bh*.84,{align:'center',col:C.grayL,sz:clamp(H*.013,7,12)});
+  ctx.restore();
+}
+
+// ── AMBIENT PARTICLES ─────────────────────────────
+// 14 particles, deterministic positions (no Math.random — safe for export).
+const PARTS=(function(){
+  const s=[0.137,0.239,0.341,0.431,0.512,0.619,0.724,0.813,0.907,0.178,0.056,0.462,0.881,0.325];
+  return s.map((v,i)=>({
+    ox:((v*7.3+s[(i+3)%14]*.8)%1),
+    oy:((s[(i+5)%14]*5.1+s[(i+7)%14]*.6)%0.88),
+    r:1.2+(i%4)*.55,
+    spd:0.007+(i%5)*.0035,
+    ang:(i*47.11)%(Math.PI*2),
+    al:0.024+(i%4)*.011
+  }));
+})();
+function drawParticles(){
+  const t=currentSec;
+  ctx.save();
+  PARTS.forEach(p=>{
+    const px=((p.ox+Math.cos(p.ang)*p.spd*t)%1+1)%1;
+    const py=((p.oy+Math.sin(p.ang)*p.spd*t)%0.88+0.88)%0.88;
+    ctx.beginPath();ctx.arc(px*W,py*H,p.r,0,Math.PI*2);
+    ctx.fillStyle=C.ink;ctx.globalAlpha=p.al;ctx.fill();
+  });
+  ctx.globalAlpha=1;ctx.restore();
+}
+
+// ── VIGNETTE ──────────────────────────────────────
+// Subtle dark radial at edges — drawn last, every frame.
+function drawVignette(){
+  ctx.save();
+  const g=ctx.createRadialGradient(W*.5,H*.48,W*.20,W*.5,H*.52,W*.78);
+  g.addColorStop(0,'rgba(42,37,32,0)');
+  g.addColorStop(0.60,'rgba(42,37,32,0)');
+  g.addColorStop(1,'rgba(42,37,32,0.22)');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  ctx.restore();
+}
+
+// ── CHAPTER FADE IN / OUT ─────────────────────────
+// 5-second black fade at each chapter boundary — applied after all visuals,
+// before lower third so the strip stays visible during dark frame.
+const FADE_DUR=5; // seconds each side
+function drawChapterFade(ci){
+  const ch=CHAPTERS[ci];
+  const chDur=ch.end-ch.start;
+  const chSec=clamp(currentSec-ch.start,0,chDur);
+  const fadeIn=clamp(chSec/FADE_DUR,0,1);
+  const fadeOut=clamp((chDur-chSec)/FADE_DUR,0,1);
+  const overlayAlpha=1-Math.min(fadeIn,fadeOut);
+  if(overlayAlpha<=0)return;
+  ctx.save();
+  ctx.globalAlpha=overlayAlpha;
+  ctx.fillStyle='#1A1612';
+  ctx.fillRect(0,0,W,H);
+  ctx.globalAlpha=1;
+  ctx.restore();
+}
+
+// ── LOWER THIRD ───────────────────────────────────
+// Persistent chapter ID strip — visible in export, above chapter panel in preview.
+function drawLowerThird(ci){
+  const ch=CHAPTERS[ci];
+  const stripH=clamp(H*.028,13,24);
+  const sy=H*0.906;
+  const lpad=clamp(W*.028,16,36);
+  ctx.save();
+  // Strip fill
+  ctx.fillStyle='rgba(42,37,32,.045)';ctx.fillRect(0,sy,W,stripH);
+  // Top hairline — teal
+  ctx.strokeStyle=C.teal;ctx.lineWidth=1;ctx.globalAlpha=.20;
+  ctx.beginPath();ctx.moveTo(0,sy);ctx.lineTo(W,sy);ctx.stroke();
+  ctx.globalAlpha=1;
+  // Teal accent bar
+  ctx.fillStyle=C.teal;ctx.globalAlpha=.72;
+  ctx.fillRect(lpad,sy+stripH*.16,2,stripH*.68);
+  ctx.globalAlpha=1;
+  // Chapter label
+  const nsz=clamp(H*.012,7,12);
+  ctx.font=`700 ${nsz}px 'Barlow Condensed',sans-serif`;
+  ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.fillStyle=C.ink2;ctx.globalAlpha=.56;
+  ctx.fillText(`W01 · ${String(ci+1).padStart(2,'0')} · ${ch.name.toUpperCase()}`,lpad+9,sy+stripH*.52);
+  // Timecode right
+  ctx.textAlign='right';
+  ctx.font=`400 ${clamp(H*.009,6,9)}px 'DM Mono',monospace`;
+  ctx.fillStyle=C.grayL;ctx.globalAlpha=.44;
+  ctx.fillText(fmtTime(currentSec),W-lpad,sy+stripH*.52);
+  ctx.globalAlpha=1;ctx.restore();
+}
+// ── CH0: The Celebration (40.3s) ─────────────────
+function animCh0(p,t){
+  const cs=currentSec-CHAPTERS[0].start;
+  // PHASE 1: Channel intro 0–2.8s → "money patterns decoded" SRT caption
+  {const a=phA(cs,0,2.8,.25);if(a>0)drawChannelCard(a);}
+  // PHASE 2: 100M hook 2–11s → "every April over 100 million Americans check one number"
+  {const a=phA(cs,2.8,11.0,.45);if(a>0){const sp=spring(apR(cs,2.8,.7));const sz=clamp(H*.13,55,160)*sp;ctx.save();ctx.globalAlpha=a;numStat(100,'','M',W*.5,H*CY_PH,C.teal,sz,sp);ctx.globalAlpha=a*apR(cs,2.8);lbl('Americans file federal income taxes every April',W*.5,H*CY_PH+sz*.45,{align:'center',col:C.gray,sz:clamp(H*.02,10,20)});mono('IRS Filing Season Statistics 2024 · VER',W*.5,H*CY_PH+sz*.65,{align:'center',alpha:.4,sz:clamp(H*.012,8,11)});ctx.restore();}}
+  // PHASE 3: Question 10.8–14.7s → "what if that celebration is the problem"
+  {const a=phA(cs,11.0,14.5,.4);if(a>0){const ap=spring(apR(cs,11.0,.6));const sz=clamp(H*.060,27,75);ctx.save();ctx.globalAlpha=a*ap;ctx.font=`900 ${sz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=C.amberD;shadowHalo();ctx.fillText('WHAT IF THE CELEBRATION',W*.5,H*CY_PH-sz*.6);clearShadow();ctx.fillStyle=C.ink;ctx.fillText('IS THE PROBLEM?',W*.5,H*CY_PH+sz*.2);ctx.globalAlpha=a*apR(cs,11.5);lbl('100 million Americans — one record number — one question almost none asked',W*.5,H*CY_PH+sz*.78,{align:'center',col:C.gray,sz:clamp(H*.018,9,18)});ctx.restore();}}
+  // PHASE 4: $3,167 stat slam 14.5–27s → "average refund hit $3,167 — all time record"
+  {const a=phA(cs,14.5,23.4,.4);if(a>0){const sp=spring(apR(cs,14.5,.7));const sz=clamp(H*.15,65,200)*sp;ctx.save();ctx.globalAlpha=a;const bw=W*.55,bx=(W-bw)/2;ctx.fillStyle='rgba(245,197,24,.07)';ctx.fillRect(bx,H*CY_PH-sz*.9,bw,sz*.95+sz*.3);numStat(3167,'$','',W*.5,H*CY_PH,C.red,sz,sp);ctx.globalAlpha=a*apR(cs,15.2);mono('IRS Filing Season Statistics 2024 · VER',W*.5,H*CY_PH+sz*.28,{align:'center',alpha:.55,sz:clamp(H*.013,8,12)});lbl('ALL-TIME RECORD HIGH',W*.5,H*CY_PH+sz*.44,{align:'center',col:C.grayL,sz:clamp(H*.016,9,16)});ctx.globalAlpha=a*apR(cs,17.5);lbl('Average federal tax refund · 2024',W*.5,H*CY_PH+sz*.62,{align:'center',col:C.gray,sz:clamp(H*.018,9,18)});ctx.restore();}}
+  // PHASE 5: 74% stat 23.4–31s → "74% of all tax filers received one"
+  {const a=phA(cs,23.4,29.5,.4);if(a>0){const sp=spring(apR(cs,23.4,.55));const sz=clamp(H*.14,60,175)*sp;ctx.save();ctx.globalAlpha=a;numStat(74,'','%',W*.5,H*CY_PH,C.amberD,sz,sp);ctx.globalAlpha=a*apR(cs,24.0);lbl('of all US tax filers received a refund in 2024',W*.5,H*CY_PH+sz*.34,{align:'center',col:C.gray,sz:clamp(H*.02,10,20)});ctx.globalAlpha=a*apR(cs,25.5);lbl('most of them called it a WIN',W*.5,H*CY_PH+sz*.54,{align:'center',col:C.ink2,sz:clamp(H*.024,11,24),w:700});ctx.restore();}}
+  // PHASE 6: Reveal hook 29.5–40.4s → "almost none asked the right question"
+  {const a=phA(cs,29.5,40.4,.5);if(a>0){const ap=spring(apR(cs,29.5,.7));const sz=clamp(H*.072,32,90);ctx.save();ctx.globalAlpha=a*ap;ctx.font=`900 ${sz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=C.ink;ctx.fillText('ALMOST NONE',W*.5,H*CY_PH-sz*.4);ctx.globalAlpha=a*apR(cs,30.2);lbl('asked the right question about it',W*.5,H*CY_PH+sz*.40,{align:'center',col:C.gray,sz:clamp(H*.026,12,26)});ctx.globalAlpha=a*apR(cs,32.0);rule(W*.25,H*CY_PH+sz*.70,W*.75,C.teal,1.5);ctx.globalAlpha=a*apR(cs,33.2);lbl('here\'s what\'s actually happening',W*.5,H*CY_PH+sz*.98,{align:'center',col:C.tealD,sz:clamp(H*.022,11,22),w:700});lbl('and once you see it, you can\'t unsee it',W*.5,H*CY_PH+sz*1.30,{align:'center',col:C.gray,sz:clamp(H*.018,9,18)});ctx.restore();}}
+}
+// ── CH1: Bigger Every Year (61.8s) ───────────────
+function animCh1(p,t){
+  const cs=currentSec-CHAPTERS[1].start;
+  // PHASE 1: Context 0–7.5s → "what almost nobody knows about that refund"
+  {const a=phA(cs,0,7.5,.4);if(a>0){ctx.save();ctx.globalAlpha=a;const sz=clamp(H*.060,26,72);ctx.font=`900 ${sz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=C.teal;shadowHalo();ctx.fillText('BIGGER EVERY YEAR',W*.5,H*CY_PH-sz*.45);clearShadow();ctx.globalAlpha=a*apR(cs,.3);lbl('but here\'s what almost nobody knows',W*.5,H*CY_PH+sz*.22,{align:'center',col:C.ink2,sz:clamp(H*.026,12,26)});lbl('about that refund — including the people who just deposited one',W*.5,H*CY_PH+sz*.58,{align:'center',col:C.gray,sz:clamp(H*.020,10,20)});ctx.restore();}}
+  // PHASE 2: Growth bars 6–34s → "$1,952 → $3,167 that's 62% in 14 years"
+  {const a=phA(cs,7.5,28.0,.5);if(a>0){const pp=ease(clamp((cs-7.5)/14,0,1));const barMaxW=W*.38,barH=H*.055,x0=W*.14,y0=H*CY_PH-barH*1.8;ctx.save();ctx.globalAlpha=a;headline('REFUND GROWTH',x0,y0-H*.028,{col:C.ink,sz:clamp(H*.032,14,32)});const bars=[{yr:'2010',val:1952,max:3167,col:C.grayL},{yr:'2024',val:3167,max:3167,col:C.teal}];bars.forEach((b,i)=>{const by=y0+i*(barH+H*.025),bw=barMaxW*(b.val/b.max)*pp;
+  // Animated value: counts up in sync with bar width
+  const dispVal=Math.round(b.val*pp);
+  ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=2.5;rr(x0,by,bw,barH,3);ctx.stroke();ctx.fillStyle=b.col;if(b.col!==C.grayL)shadowHalo();rr(x0,by,bw,barH,3);ctx.fill();clearShadow();lbl(b.yr,x0-H*.01,by+barH*.72,{align:'right',col:C.gray,sz:clamp(H*.02,10,18)});lbl('$'+dispVal.toLocaleString(),x0+bw+H*.01,by+barH*.72,{col:b.col===C.grayL?C.gray:C.tealD,sz:clamp(H*.02,10,18)});});if(pp>.65){ctx.globalAlpha=a*ease(clamp((pp-.65)/.2,0,1));mono('Wages grew +47%  ·  Refunds grew +62%  ·  IRS Historical Data · VER',x0,y0+barH*3+H*.04,{alpha:.45,sz:clamp(H*.012,8,11)});const ax=x0+barMaxW+H*.05;ctx.font=`900 ${clamp(H*.030,13,30)}px 'Barlow Condensed',sans-serif`;ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle=C.amberD;shadowHalo();ctx.fillText('+62%',ax,y0+barH*.72+barH+H*.025+barH*.5);clearShadow();}ctx.restore();}}
+  // PHASE 3: Survey bars 28–54s → "37% pay bills · 32% save · 21% big purchase · 11% invest"
+  {const a=phA(cs,28.0,49.0,.5);if(a>0){const pp=ease(clamp((cs-28.0)/12,0,1));const items=[{lbl:'Pay bills',pct:37,col:C.gray},{lbl:'Save it',pct:32,col:C.teal},{lbl:'Big purchase',pct:21,col:C.grayL},{lbl:'Invest',pct:11,col:C.amberD}];const barMaxW=W*.38,barH=H*.042,x0=W*.22,y0=H*CY_PH-barH*2.3;ctx.save();ctx.globalAlpha=a;headline('WHAT FILERS PLAN TO DO',x0,y0-H*.025,{col:C.ink,sz:clamp(H*.028,13,28)});items.forEach((b,i)=>{const by=y0+i*(barH+H*.02),bw=barMaxW*(b.pct/100)*pp;
+  // Animated percentage: counts up in sync with bar width
+  const dispPct=Math.round(b.pct*pp);
+  ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=2.5;rr(x0,by,bw,barH,3);ctx.stroke();ctx.fillStyle=b.col;if(b.col!==C.gray&&b.col!==C.grayL)shadowHalo();rr(x0,by,bw,barH,3);ctx.fill();clearShadow();lbl(b.lbl,x0-H*.01,by+barH*.72,{align:'right',col:C.gray,sz:clamp(H*.018,9,16)});lbl(dispPct+'%',x0+bw+H*.01,by+barH*.72,{col:b.col===C.gray||b.col===C.grayL?C.gray:b.col,sz:clamp(H*.018,9,16)});});mono('NerdWallet / Bankrate Tax Survey 2024 · VER',x0,y0+barH*5+H*.02,{alpha:.42,sz:clamp(H*.011,7,10)});
+  // NerdWallet brand badge — appears when source is cited
+  if(pp>.55){ctx.globalAlpha=a*ease(clamp((pp-.55)/.25,0,1));drawBrandBadge('NERDWALLET','Annual Tax Survey · 2024',x0+barMaxW+W*.10,y0+barH*1.5,a*ease(clamp((pp-.55)/.25,0,1)),C.tealD);}
+  ctx.restore();}}
+  // PHASE 4: Insight 49–61.8s → "only 11% invest · money was working"
+  {const a=phA(cs,49.0,61.9,.5);if(a>0){const sp=spring(apR(cs,49.0,.65));const sz=clamp(H*.10,44,125)*sp;ctx.save();ctx.globalAlpha=a;numStat(11,'ONLY ','%',W*.5,H*CY_PH-sz*.12,C.amberD,sz*.65,sp);ctx.globalAlpha=a*apR(cs,49.8);lbl('plan to invest their refund — while 37% will just pay existing bills',W*.5,H*CY_PH+sz*.28,{align:'center',col:C.gray,sz:clamp(H*.02,10,20)});ctx.globalAlpha=a*apR(cs,52.0);rule(W*.25,H*CY_PH+sz*.46,W*.75,C.ink2,1);lbl('"that refund money wasn\'t sitting somewhere waiting for you"',W*.5,H*CY_PH+sz*.64,{align:'center',col:C.ink2,sz:clamp(H*.019,9,19),w:700});lbl('it was working. Just not for you.',W*.5,H*CY_PH+sz*.86,{align:'center',col:C.tealD,sz:clamp(H*.022,10,22),w:700});ctx.restore();}}
+}
+// ── CH2: Emergency. Never Ended. (89.1s) ─────────
+function animCh2(p,t){
+  const cs=currentSec-CHAPTERS[2].start;
+  // PHASE 1: 1943 hook 0–8.5s → "to understand why you need to go back to 1943"
+  {const a=phA(cs,0,8.5,.4);if(a>0){const sp=spring(apR(cs,0,.7));const sz=clamp(H*.12,52,145)*sp;ctx.save();ctx.globalAlpha=a;numStat(1943,'','',W*.5,H*CY_PH,C.red,sz,sp);ctx.globalAlpha=a*apR(cs,.7);lbl('an emergency decision never meant to become permanent',W*.5,H*CY_PH+sz*.36,{align:'center',col:C.gray,sz:clamp(H*.020,10,20)});ctx.restore();}}
+  // PHASE 2: Pre-war list 8.5–27s — ends exactly when timeline begins (no overlap)
+  // SRT alignment: 4% at cs≈8.6, war at cs≈19.9, Friedman at cs≈30.6
+  {const a=phA(cs,8.5,27.0,.5);if(a>0){const items=[{t:'BEFORE 1940',d:'Just 4% of Americans paid federal income tax',ap:apR(cs,8.5),col:C.tealD},{t:'HOW IT WORKED',d:'Paid by the wealthy · annual lump sum · every March',ap:apR(cs,12.5),col:C.ink2},{t:'1939–1945  WORLD WAR II',d:'US needed to fund a global war — immediately, not at year-end',ap:apR(cs,19.5),col:C.red},{t:'THE SOLUTION',d:'A young economist at the Treasury designed paycheck withholding',ap:apR(cs,24.0),col:C.amberD}];const rowH=H*.082,y0=H*CY_PH-rowH*1.6;ctx.save();items.forEach((it,i)=>{ctx.globalAlpha=a*it.ap;const tsz=clamp(H*.028,12,28);ctx.font=`900 ${tsz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle=it.col;shadowHalo();ctx.fillText(it.t,W*.08,y0+i*rowH+tsz);clearShadow();lbl(it.d,W*.08,y0+i*rowH+tsz+H*.022,{col:C.gray,sz:clamp(H*.018,9,18)});});ctx.restore();}}
+  // PHASE 2b: Milton Friedman portrait — appears exactly when SRT names him (cs≈30.6)
+  // OVERLAP GUARD: timeline runs at timeY=H*(CY_PH+0.04) from W*.10 to W*.90.
+  // Card placed at top-right cx=W*.76, cy=H*(CY_PH-0.22) — clear of timeline nodes and labels.
+  // Card horizontal span ≈ W*.66–W*.86; timeline rightmost node at W*.90 → no x-overlap.
+  // Card bottom ≈ H*(CY_PH-0.12); timeline at H*(CY_PH+0.04) → H*0.16 vertical clearance.
+  {const a=phA(cs,30.5,55.0,.5);if(a>0){const sp=spring(apR(cs,30.5,.6));ctx.save();ctx.globalAlpha=a*sp;drawPersonCard('friedman','Milton Friedman','Treasury Dept. · 1943','Designed paycheck withholding',W*.76,H*(CY_PH-0.22),a*sp,C.amberD);ctx.restore();}}
+  // PHASE 3: Timeline 27–65s → "CTPA 1943 · 1913 amendment · 2026 still running"
+  {const a=phA(cs,27.0,55.0,.5);if(a>0){const pp=ease(clamp((cs-27.0)/20,0,1));const nodes=[{yr:'1913',lbl:'16th Amendment',col:C.grayL,y:0},{yr:'1940',lbl:'4% pay taxes',col:C.grayL,y:0},{yr:'1943',lbl:'WARTIME EMERGENCY',col:C.red,y:-H*.06,big:true},{yr:'1945',lbl:'74% paying',col:C.grayL,y:0},{yr:'2026',lbl:'STILL RUNNING',col:C.teal,y:0}];const timeY=H*CY_PH+H*.04,x0=W*.1,x1=W*.9,tw=x1-x0,xs=[x0,x0+tw*.22,x0+tw*.44,x0+tw*.62,x1];const prog=clamp(pp*1.4,0,1),lineX=x0+tw*prog;ctx.save();ctx.globalAlpha=a;ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=3.5;ctx.beginPath();ctx.moveTo(x0,timeY);ctx.lineTo(lineX,timeY);ctx.stroke();ctx.strokeStyle=C.ink2;ctx.lineWidth=2;ctx.globalAlpha=a*.35;ctx.beginPath();ctx.moveTo(x0,timeY);ctx.lineTo(lineX,timeY);ctx.stroke();ctx.globalAlpha=a;nodes.forEach((n,i)=>{const np=clamp(pp*1.6-i*.25,0,1);if(np<=0)return;const nx=xs[i],sp=spring(np),r=n.big?(H*.025*sp):(H*.015*sp);ctx.fillStyle='rgba(255,255,255,.6)';ctx.beginPath();ctx.arc(nx,timeY,r+2,0,Math.PI*2);ctx.fill();ctx.fillStyle=n.col;shadowHalo();ctx.beginPath();ctx.arc(nx,timeY,r,0,Math.PI*2);ctx.fill();clearShadow();const above=i%2===0,ly=above?(timeY-r-H*.025-n.y):(timeY+r+H*.025-n.y),yrsz=n.big?clamp(H*.032,14,30):clamp(H*.022,10,20);ctx.font=`${n.big?900:700} ${yrsz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=n.col;if(n.col!==C.grayL)shadowHalo();ctx.fillText(n.yr,nx,ly);clearShadow();lbl(n.lbl,nx,ly+yrsz*.3+H*.016,{align:'center',col:n.col===C.grayL?C.gray:n.col,sz:clamp(H*.015,8,14),w:n.big?700:500});});if(pp>.6){ctx.globalAlpha=a*ease(clamp((pp-.6)/.2,0,1));mono('Current Tax Payment Act 1943 · Written as temporary wartime measure · Never repealed · IRC §3402 · VER',W*.5,timeY+H*.07,{align:'center',alpha:.45,sz:clamp(H*.012,8,11)});}ctx.restore();}}
+  // PHASE 4: CTPA details card 55–73s → "signed 1943 · by 1945 74% paid · still running"
+  {const a=phA(cs,55.0,68.0,.5);if(a>0){ctx.save();ctx.globalAlpha=a;const pw=W*.7,ph=H*.30,px=(W-pw)/2,py=H*CY_PH-ph*.52;ctx.fillStyle=C.paper;rr(px,py,pw,ph,7);ctx.fill();ctx.fillStyle='rgba(42,37,32,.035)';rr(px,py,pw,ph,7);ctx.fill();ctx.strokeStyle=C.amberD;ctx.lineWidth=1.5;shadowHalo();rr(px,py,pw,ph,7);ctx.stroke();clearShadow();const tsz=clamp(H*.028,13,34);ctx.font=`900 ${tsz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=C.amberD;shadowHalo();ctx.fillText('CURRENT TAX PAYMENT ACT · 1943',W*.5,py+H*.048);clearShadow();const rows=[['Designed as:','WARTIME EMERGENCY MEASURE',C.red],['Status today:','NEVER REPEALED — 83 years later',C.teal],['Designed by:','Milton Friedman (Treasury Dept. team)',C.gray],['Consequence:','Changed how citizens perceived their tax burden',C.ink2]];const klx=px+H*.025,vlx=px+pw*.33,maxVW=pw*.64;rows.forEach(([k,v,vc],i)=>{ctx.globalAlpha=a*apR(cs,55.5+i*1.2);lbl(k,klx,py+H*.04+H*.058*(i+1),{col:C.grayL,sz:clamp(H*.016,8,16),w:500});const vLines=wrapText(v,maxVW,clamp(H*.019,9,19),700);vLines.forEach((vl,li)=>{lbl(vl,vlx,py+H*.04+H*.058*(i+1)+li*(clamp(H*.019,9,19)*1.2),{col:vc,sz:clamp(H*.019,9,19),w:700});});});ctx.restore();}}
+  // PHASE 5: 83yr + 4%→74% 68–89.1s
+  {const a=phA(cs,68.0,89.2,.5);if(a>0){ctx.save();ctx.globalAlpha=a;draw2StatBoxes('83 YEARS','still running as designed','4% → 74%','taxpayers in just 5 years',C.teal,C.amberD,1);ctx.globalAlpha=a*apR(cs,70.5);mono('S&P System: IRC §3402 unchanged since 1943 · VER',W*.5,H*CY_PH+H*.115,{align:'center',alpha:.4,sz:clamp(H*.012,8,11)});ctx.restore();}}
+}
+// ── CH3: Your Money's Other Job (98.7s) ──────────
+function animCh3(p,t){
+  const cs=currentSec-CHAPTERS[3].start;
+  // PHASE 1: Intro 0–10s → "let's trace your money from Jan paycheck to refund day"
+  {const a=phA(cs,0,10.0,.4);if(a>0){ctx.save();ctx.globalAlpha=a;drawInfoCard(["YOUR MONEY'S OTHER JOB","from your first January paycheck","to the day you get it back","something interesting happens in between"],W*.5,H*CY_PH,a,C.teal);ctx.restore();}}
+  // PHASE 2: Flow diagram 9–42s → "IRS withholds 15-22% · treasury · 4.5mo wait · refund $0 interest"
+  {const a=phA(cs,10.0,33.0,.5);if(a>0){const pp=ease(clamp((cs-10.0)/14,0,1));const steps=[{lbl:'YOUR\nPAYCHECK',sub:'Jan–Dec',col:C.teal},{lbl:'IRS\nWITHHOLDS',sub:'15–22%',col:C.red},{lbl:'US TREASURY\nGEN. FUND',sub:'daily ops',col:C.amberD},{lbl:'~4.5 MONTHS\nLATER',sub:'waiting...',col:C.grayL},{lbl:'REFUND\nARRIVES',sub:'$0 interest',col:C.teal}];const n=steps.length,boxW=clamp(W*.12,80,140),boxH=H*.10,x0=(W-boxW*n-H*.04*(n-1))/2,y0=H*CY_PH-boxH*.5;ctx.save();ctx.globalAlpha=a;steps.forEach((s,i)=>{const sp=clamp(spring(Math.max(pp*2.5-i*.4,0)),0,1);if(sp<=0)return;const bx=x0+i*(boxW+H*.04);ctx.save();ctx.globalAlpha=a*sp;ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=2.5;rr(bx,y0,boxW,boxH,5);ctx.stroke();ctx.fillStyle=i===1?'rgba(230,57,70,.08)':'rgba(255,255,255,.45)';rr(bx,y0,boxW,boxH,5);ctx.fill();ctx.strokeStyle=s.col;ctx.lineWidth=i===1?2:1.5;if(s.col!==C.grayL)shadowHalo();rr(bx,y0,boxW,boxH,5);ctx.stroke();clearShadow();const cx_=bx+boxW/2;s.lbl.split('\n').forEach((line,li)=>{const sz=clamp(H*.023,10,22),row=y0+boxH*.3+li*(sz*1.1);ctx.font=`900 ${sz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=s.col===C.grayL?C.gray:s.col;shadowHalo();ctx.fillText(line,cx_,row);clearShadow();});lbl(s.sub,cx_,y0+boxH*.82,{align:'center',col:C.gray,sz:clamp(H*.014,7,13)});if(i<n-1&&sp>.7)arrow(bx+boxW+H*.01,y0+boxH*.5,clamp(H*.025,10,20),s.col,'right');ctx.restore();});ctx.restore();}}
+  // PHASE 3: $334B stats 33–60s → "$334B over-withheld · $4.7T total revenue"
+  {const a=phA(cs,33.0,54.0,.5);if(a>0){ctx.save();ctx.globalAlpha=a;draw2StatBoxes('$334 BILLION','over-withheld · returned as refunds 2023','84% OF REVENUE','came from payroll & withholding',C.red,C.tealD,1);ctx.globalAlpha=a*apR(cs,35.5);lbl('US collected $4.7T in federal tax revenue in 2023',W*.5,H*CY_PH+H*.118,{align:'center',col:C.gray,sz:clamp(H*.018,9,18)});mono('IRS Data Book 2023 · OMB Historical Tables · VER',W*.5,H*CY_PH+H*.148,{align:'center',alpha:.42,sz:clamp(H*.011,7,10)});ctx.restore();}}
+  // PHASE 4: Injustice pair 54–82s → "$8.9B govt benefit vs $0 you receive"
+  {const a=phA(cs,54.0,74.0,.5);if(a>0){ctx.save();ctx.globalAlpha=a;const iW=W*.38,py=H*CY_PH-H*.065;ctx.fillStyle='rgba(230,57,70,.07)';ctx.fillRect(W*.06,py,iW,H*.115);ctx.strokeStyle=C.red;ctx.lineWidth=1.5;ctx.strokeRect(W*.06,py,iW,H*.115);lbl('GOVT FLOAT BENEFIT',W*.08,py+H*.025,{col:C.red,sz:clamp(H*.014,7,13)});const gsz=clamp(H*.038,17,46);ctx.font=`900 ${gsz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle=C.red;shadowHalo();ctx.fillText('~$8.9 BILLION',W*.08,py+H*.088);clearShadow();mono('$334B × 5.3% × 0.5yr  EST',W*.08,py+H*.108,{alpha:.4,sz:clamp(H*.011,7,10)});ctx.fillStyle='rgba(42,37,32,.04)';ctx.fillRect(W*.56,py,iW,H*.115);ctx.strokeStyle=C.grayL;ctx.lineWidth=1.5;ctx.strokeRect(W*.56,py,iW,H*.115);lbl('YOUR INTEREST EARNED',W*.58,py+H*.025,{col:C.grayL,sz:clamp(H*.014,7,13)});ctx.font=`900 ${gsz}px 'Barlow Condensed',sans-serif`;ctx.fillStyle=C.gray;ctx.fillText('$0',W*.58,py+H*.088);mono('IRC §6611 · VER',W*.58,py+H*.108,{alpha:.4,sz:clamp(H*.011,7,10)});ctx.globalAlpha=a*apR(cs,57.0);mono('Federal Funds Rate 5.3% · 2023 · Conservative estimate · VER',W*.5,py+H*.132,{align:'center',alpha:.38,sz:clamp(H*.011,7,10)});ctx.restore();}}
+  // PHASE 5: Zero conclusion 74–98.7s → "under federal law it owes you nothing"
+  {const a=phA(cs,74.0,98.8,.5);if(a>0){const sp=spring(apR(cs,74.0,.6));const sz=clamp(H*.13,55,160)*sp;ctx.save();ctx.globalAlpha=a;stat('ZERO',W*.5,H*CY_PH,C.gray,sz);ctx.globalAlpha=a*apR(cs,74.8);lbl('interest the IRS owes you on over-withheld money',W*.5,H*CY_PH+sz*.38,{align:'center',col:C.gray,sz:clamp(H*.02,10,20)});lbl('unless held 45+ days past filing deadline — IRC §6611',W*.5,H*CY_PH+sz*.62,{align:'center',col:C.grayL,sz:clamp(H*.017,8,17)});mono('Internal Revenue Code §6611(a) · VER',W*.5,H*CY_PH+sz*.82,{align:'center',alpha:.4,sz:clamp(H*.011,7,10)});ctx.restore();}}
+}
+// ── CH4: The 30-Year Number (96.9s) ──────────────
+function animCh4(p,t){
+  const cs=currentSec-CHAPTERS[4].start;
+  const holdStart=0.40,holdEnd=0.70,isHold=(p>=holdStart&&p<=holdEnd);
+  // PHASE 1: $264/month context 0–26s → "$3167 ÷ 12 = $264 — not a windfall"
+  // SRT: $264 mentioned at cs≈7.2, "not a windfall" at cs≈16.6, "directing it yourself" at cs≈23.8
+  {const a=phA(cs,0,26.0,.4);if(a>0){const sp=spring(apR(cs,0,.6));const sz=clamp(H*.13,55,160)*sp;ctx.save();ctx.globalAlpha=a;numStat(264,'$','',W*.5,H*CY_PH-H*.05,C.amberD,sz,sp);ctx.globalAlpha=a*apR(cs,.8);lbl('PER MONTH',W*.5,H*CY_PH+sz*.18,{align:'center',col:C.ink2,sz:clamp(H*.032,14,32),w:800});ctx.globalAlpha=a*apR(cs,2.0);lbl('$3,167 ÷ 12 months — that\'s not a windfall',W*.5,H*CY_PH+sz*.45,{align:'center',col:C.gray,sz:clamp(H*.020,10,20)});lbl('that\'s a monthly decision, made automatically',W*.5,H*CY_PH+sz*.68,{align:'center',col:C.grayL,sz:clamp(H*.018,9,18)});ctx.restore();}}
+  // PHASE 2: Compound table 26–52s (SRT: "25 years old starting today" at cs≈26.3, 5yr at cs≈37.6, 30yr at cs≈48.6)
+  if(!isHold){const a=phA(cs,26.0,38.8,.5);if(a>0){const rows=[{yr:'5 Years',inv:'$15,840',val:'$17,453',gain:'+$1,613',big:false},{yr:'10 Years',inv:'$31,680',val:'$45,604',gain:'+$13,924',big:false},{yr:'20 Years',inv:'$63,360',val:'$163,174',gain:'+$99,814',big:false},{yr:'30 Years',inv:'$95,040',val:'$321,207',gain:'+$226,167',big:true}];const pp=ease(clamp((cs-26.0)/12,0,1));const visible=Math.floor(pp*5);const rowH=H*.075,x0=W*.08,y0=H*CY_PH-rowH*2.5;
+        // Explicit column anchors — each used for BOTH header and data, no offset fractions
+        const c1=x0,c2=x0+W*.22,c3=x0+W*.47,c4=x0+W*.68;
+        ctx.save();ctx.globalAlpha=a;if(visible>0){const hdrs=['TIME HORIZON','TOTAL INVESTED','VALUE @ 7%','YOUR GAIN'];[c1,c2,c3,c4].forEach((cx,i)=>lbl(hdrs[i],cx,y0-H*.02,{col:C.grayL,sz:clamp(H*.013,7,12),w:700}));}rows.forEach((r,i)=>{if(i+1>visible)return;const sp=spring(Math.max(pp*5-i,0));const by=y0+i*rowH;ctx.save();ctx.globalAlpha=a*sp;if(r.big){ctx.fillStyle='rgba(45,184,157,.06)';ctx.fillRect(c1-H*.01,by,c4-c1+W*.14,rowH*.85);}const sz=r.big?clamp(H*.038,17,38):clamp(H*.025,11,24);ctx.textAlign='left';ctx.textBaseline='alphabetic';
+        // col 1 — time horizon
+        ctx.font=`${r.big?900:700} ${sz}px 'Barlow Condensed',sans-serif`;ctx.fillStyle=r.big?C.ink:C.ink2;ctx.fillText(r.yr,c1,by+rowH*.65);
+        // col 2 — total invested
+        ctx.font=`600 ${clamp(sz*.8,9,20)}px 'Barlow',sans-serif`;ctx.fillStyle=C.gray;ctx.fillText(r.inv,c2,by+rowH*.65);
+        // col 3 — value @ 7%
+        ctx.font=`900 ${sz}px 'Barlow Condensed',sans-serif`;ctx.fillStyle=r.big?C.teal:C.tealD;if(r.big)shadowHalo();ctx.fillText(r.val,c3,by+rowH*.65);clearShadow();
+        // col 4 — your gain
+        ctx.font=`700 ${sz}px 'Barlow Condensed',sans-serif`;ctx.fillStyle=r.big?C.amberD:C.gray;ctx.fillText(r.gain,c4,by+rowH*.65);ctx.restore();});if(visible>0)mono('S&P 500 30yr avg ~7% inflation-adj · Vanguard 2024 · EST compound formula · VER',x0,y0+rows.length*rowH+H*.02,{alpha:.38,sz:clamp(H*.011,7,10)});ctx.restore();}}
+  // PHASE 3: HOLD FRAME $321,207
+  if(isHold){const hp=clamp((p-holdStart)/.08,0,1);const sp=spring(hp);ctx.save();ctx.globalAlpha=sp;const gsz=clamp(H*.22,100,260);
+  // Count up during entry: 0 → $321,207 through first 85% of hp
+  const _hv=hp>=0.85?321207:Math.round(321207*Math.pow(clamp(hp/0.85,0,1),0.6));
+  const _hs='$'+_hv.toLocaleString();
+  ctx.font=`900 ${gsz*2.2}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=C.ink;ctx.globalAlpha=.02*sp;ctx.fillText(_hs,W*.5,H*CY_PH);ctx.globalAlpha=sp;ctx.font=`900 ${gsz}px 'Barlow Condensed',sans-serif`;ctx.fillStyle=C.teal;shadowHalo();ctx.fillText(_hs,W*.5,H*CY_PH);clearShadow();const lsz=clamp(H*.024,11,24);ctx.font=`700 ${lsz}px 'Barlow',sans-serif`;ctx.fillStyle=C.gray;ctx.fillText('$264/month · 30 years · 7% annual return',W*.5,H*CY_PH+gsz*.55);ctx.font=`500 ${clamp(H*.018,9,18)}px 'Barlow',sans-serif`;ctx.fillStyle=C.grayL;ctx.globalAlpha=.7*sp;ctx.fillText('$95,040 invested  →  $226,167 compound gain',W*.5,H*CY_PH+gsz*.72);ctx.globalAlpha=sp;mono('MPD · MONEY PATTERNS DECODED',W-24,H*.88,{align:'right',alpha:.65,sz:clamp(H*.013,8,12)});mono('EST · Standard FV formula · monthly compounding · VER',W*.5,H*CY_PH+gsz*.88,{align:'center',alpha:.35,sz:clamp(H*.011,7,10)});ctx.restore();}
+  // PHASE 4: Credit card alt 63–96.9s → "if investing isn't where you are right now"
+  if(!isHold){const a=phA(cs,68.0,96.9,.5);if(a>0){ctx.save();ctx.globalAlpha=a;draw2StatBoxes('$321,207','invest $264/month · 30yrs · 7%','OR ~$662','applied to credit card interest savings',C.teal,C.amberD,1);ctx.globalAlpha=a*apR(cs,68.5);lbl('the specific use isn\'t the point — the point is: it works for YOU',W*.5,H*CY_PH+H*.12,{align:'center',col:C.gray,sz:clamp(H*.019,9,19)});ctx.restore();}}
+}
+// ── CH5: Same Trap, Three Forms (79.3s) ──────────
+function animCh5(p,t){
+  const cs=currentSec-CHAPTERS[5].start;
+  // PHASE 1: Intro 0–12s
+  {const a=phA(cs,0,12.0,.4);if(a>0){ctx.save();ctx.globalAlpha=a;drawInfoCard(['SAME TRAP — THREE OTHER VERSIONS','the tax refund pattern isn\'t unique','recognising it changes how you see everything'],W*.5,H*CY_PH,a,C.amberD);ctx.restore();}}
+  // PHASE 2: Credit card bars 10–38s → "rewards $52.6B vs interest paid $108B"
+  {const a=phA(cs,12.0,34.0,.5);if(a>0){const pp=ease(clamp((cs-12.0)/10,0,1));const bars=[{lbl:'CC REWARDS PAID OUT',val:52.6,max:108.3,col:C.teal},{lbl:'CC INTEREST PAID',val:108.3,max:108.3,col:C.red}];const bMaxW=W*.45,bH=H*.065,x0=W*.12,y0=H*CY_PH-bH;ctx.save();ctx.globalAlpha=a;headline('CREDIT CARD TRAP',x0,y0-H*.03,{col:C.ink,sz:clamp(H*.032,14,32)});bars.forEach((b,i)=>{const by=y0+i*(bH+H*.028),bw=bMaxW*(b.val/108.3)*pp;
+  // Animated value: counts up in sync with bar, 1 decimal place for billions
+  const dispVal='$'+(b.val*pp).toFixed(1)+'B';
+  ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=3;rr(x0,by,bw,bH,4);ctx.stroke();ctx.fillStyle=b.col;shadowHalo();rr(x0,by,bw,bH,4);ctx.fill();clearShadow();lbl(b.lbl,x0-H*.01,by+bH*.72,{align:'right',col:C.gray,sz:clamp(H*.018,9,16)});lbl(dispVal,x0+bw+H*.01,by+bH*.72,{col:b.col===C.teal?C.tealD:b.col,sz:clamp(H*.022,10,20)});});if(pp>.7){ctx.globalAlpha=a*ease(clamp((pp-.7)/.2,0,1));lbl('For every $1 in rewards: consumers pay ~$2 in interest',x0,y0+bH*2.8+H*.01,{col:C.gray,sz:clamp(H*.018,9,18)});}mono('Fed G.19 Consumer Credit / Nilson Report 2022 · VER / EST',x0,y0+bH*3.2+H*.01,{alpha:.42,sz:clamp(H*.011,7,10)});ctx.restore();}}
+  // PHASE 3: Loyalty $360B 34–57s
+  {const a=phA(cs,34.0,51.0,.5);if(a>0){const sp=spring(apR(cs,34.0,.5));const sz=clamp(H*.09,40,115)*sp;ctx.save();ctx.globalAlpha=a;numStat(360,'$',' BILLION',W*.5,H*CY_PH,C.red,sz,sp);ctx.globalAlpha=a*apR(cs,35.0);lbl('UNREDEEMED LOYALTY POINTS — US',W*.5,H*CY_PH+sz*.42,{align:'center',col:C.gray,sz:clamp(H*.02,10,18)});lbl('30% of all earned points expire before use',W*.5,H*CY_PH+sz*.68,{align:'center',col:C.grayL,sz:clamp(H*.017,9,15)});mono('McKinsey & Company Loyalty Program Research 2022 · EST',W*.5,H*CY_PH+sz*.90,{align:'center',alpha:.42,sz:clamp(H*.011,7,10)});ctx.restore();}}
+  // PHASE 4: 401k 51–79.3s → "67% don't maximize match"
+  {const a=phA(cs,51.0,79.4,.5);if(a>0){const sp=spring(apR(cs,51.0,.5));const sz=clamp(H*.13,55,165)*sp;ctx.save();ctx.globalAlpha=a;numStat(67,'','%',W*.5,H*CY_PH,C.amberD,sz,sp);ctx.globalAlpha=a*apR(cs,52.0);lbl('EMPLOYEES WHO DON\'T MAXIMIZE 401K MATCH',W*.5,H*CY_PH+sz*.45,{align:'center',col:C.gray,sz:clamp(H*.02,10,18)});lbl('Guaranteed 50–100% return — left on the table every year',W*.5,H*CY_PH+sz*.68,{align:'center',col:C.grayL,sz:clamp(H*.018,9,16)});mono('Vanguard How America Saves 2023 · VER',W*.5,H*CY_PH+sz*.88,{align:'center',alpha:.42,sz:clamp(H*.011,7,10)});ctx.restore();}}
+}
+// ── CH6: 95% Never File (96s) ────────────────────
+function animCh6(p,t){
+  const cs=currentSec-CHAPTERS[6].start;
+  // SRT-aligned phases (Ch6 = 466.166s):
+  //  cs 0–10s:  intro "US isn't the only country" (SRT 143-146)
+  //  cs 10–26s: JAPAN 95% + auto reconcile (SRT 147-149)
+  //  cs 22–37s: UK PAYE 32.7M (SRT 150-153)
+  //  cs 35–51s: DENMARK 90% pre-filled (SRT 154-156)
+  //  cs 43–64s: AUSTRALIA 87% pre-populated (SRT 157-163)
+  //  cs 51–70s: 30 NATIONS vs US alone (SRT 160-163)
+  //  cs 64–83s: 6.5B hours · $15.4B industry (SRT 164-168) + TurboTax/H&R Block
+  //  cs 80–96s: Policy conclusion (SRT 169-173)
+
+  // PHASE 0: Intro 0–10s (ends exactly when Japan SRT cue cs≈10.57 arrives — no overlap)
+  {const a=phA(cs,0,10.0,.4);if(a>0){const ap=spring(apR(cs,0,.6));ctx.save();ctx.globalAlpha=a*ap;drawInfoCard(['THE US IS NOT ALONE','it\'s the only major economy','that makes you do this yourself'],W*.5,H*CY_PH,a*ap,C.teal);ctx.restore();}}
+
+  // PHASE 1: Japan 10–22s — SRT #147 @ cs≈10.57; ends when UK SRT #150 arrives cs≈22.7
+  {const a=phA(cs,10.0,22.0,.5);if(a>0){const sp=spring(apR(cs,10.0,.7));ctx.save();ctx.globalAlpha=a*sp;drawCountrySpotlight('JP','JAPAN','95% NEVER FILE','employer withholds & reconciles taxes automatically',W*.5,H*CY_PH,a*sp,C.teal);ctx.globalAlpha=a*sp*apR(cs,12.0);mono('Japan NTA Annual Statistical Report 2022 · VER',W*.5,H*CY_PH+H*.125,{align:'center',alpha:.42,sz:clamp(H*.011,7,10)});ctx.restore();}}
+
+  // PHASE 2: UK 22–35s — SRT #150 @ cs≈22.7; ends when Denmark SRT #154 arrives cs≈35.4
+  {const a=phA(cs,22.0,35.0,.5);if(a>0){const sp=spring(apR(cs,22.0,.6));ctx.save();ctx.globalAlpha=a*sp;drawCountrySpotlight('GB','UNITED KINGDOM','32.7M WORKERS','PAYE — pay as you earn, no annual filing required',W*.5,H*CY_PH,a*sp,C.teal);ctx.globalAlpha=a*sp*apR(cs,24.0);mono('UK HMRC PAYE Statistics 2022/23 · VER',W*.5,H*CY_PH+H*.125,{align:'center',alpha:.42,sz:clamp(H*.011,7,10)});ctx.restore();}}
+
+  // PHASE 3: Denmark 35–43s — SRT #154 @ cs≈35.4; ends when Australia SRT #157 arrives cs≈43
+  {const a=phA(cs,35.0,43.0,.5);if(a>0){const sp=spring(apR(cs,35.0,.6));ctx.save();ctx.globalAlpha=a*sp;drawCountrySpotlight('DK','DENMARK','90%+ AUTO-FILED','pre-completed return — no action required from citizens',W*.5,H*CY_PH,a*sp,C.teal);ctx.globalAlpha=a*sp*apR(cs,37.0);mono('Denmark SKAT Tax Administration 2023 · VER',W*.5,H*CY_PH+H*.125,{align:'center',alpha:.42,sz:clamp(H*.011,7,10)});ctx.restore();}}
+
+  // PHASE 4: Australia 43–51s — SRT #157 @ cs≈43; ends exactly when table SRT #160 arrives cs≈51.5
+  {const a=phA(cs,43.0,51.0,.5);if(a>0){const sp=spring(apR(cs,43.0,.6));ctx.save();ctx.globalAlpha=a*sp;drawCountrySpotlight('AU','AUSTRALIA','87% PRE-POPULATED','ATO fills returns with employer & bank data — optional review',W*.5,H*CY_PH,a*sp,C.teal);ctx.globalAlpha=a*sp*apR(cs,45.0);mono('Australian Taxation Office ATO 2022/23 · VER',W*.5,H*CY_PH+H*.125,{align:'center',alpha:.42,sz:clamp(H*.011,7,10)});ctx.restore();}}
+
+  // PHASE 5: 30 nations comparison table — cs=51–64s (ends exactly when industry SRT #164 arrives cs≈64.4)
+  {const a=phA(cs,51.0,64.0,.5);if(a>0){const pp=ease(clamp((cs-51.0)/10,0,1));
+  const rows=[{country:'JAPAN',code:'JP',sys:'Auto reconciliation',files:'No filing',pct:'95%',col:C.teal},{country:'UK',code:'GB',sys:'PAYE auto-calculated',files:'No filing',pct:'—',col:C.teal},{country:'DENMARK',code:'DK',sys:'Pre-filled return',files:'No action',pct:'90%+',col:C.teal},{country:'AUSTRALIA',code:'AU',sys:'Pre-populated return',files:'Optional',pct:'87%',col:C.teal},{country:'UNITED STATES',code:'US',sys:'Manual withholding',files:'Must file',pct:'74%',col:C.red,hl:true}];
+  const visible=Math.floor(pp*1.5*rows.length),rowH=H*.065,x0=W*.07,colW=(W*.86)/5,y0=H*CY_PH-rowH*2.7;
+  ctx.save();ctx.globalAlpha=a;
+  ['','COUNTRY','SYSTEM','MUST FILE','AUTO RATE'].forEach((h,i)=>lbl(h,x0+i*colW,y0,{col:C.grayL,sz:clamp(H*.013,7,12),w:700}));
+  rule(x0,y0+H*.01,x0+W*.86,C.grayL,1.5);
+  rows.forEach((r,i)=>{if(i>visible)return;const sp2=spring(Math.max(pp*1.5*rows.length-i,0));const by=y0+H*.02+i*rowH;ctx.globalAlpha=a*sp2;if(r.hl){ctx.fillStyle='rgba(230,57,70,.07)';ctx.fillRect(x0-H*.01,by-rowH*.08,W*.86+H*.02,rowH*.85);}
+  // Canvas-drawn flag in col 0 (replaces unreliable emoji ctx.fillText)
+  const fH=rowH*.55,fW=fH*1.55;drawFlag(r.code,x0+fW*.5,by+rowH*.42,fW,fH);
+  const sz=clamp(H*.026,11,24),csz=r.hl?clamp(H*.028,12,26):sz;ctx.font=`${r.hl?900:700} ${csz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle=r.col;if(r.hl)shadowHalo();ctx.fillText(r.country,x0+colW,by+rowH*.6);clearShadow();
+  ctx.font=`500 ${sz*.8}px 'Barlow',sans-serif`;ctx.fillStyle=r.hl?C.ink:C.ink2;ctx.fillText(r.sys,x0+colW*2,by+rowH*.6);
+  ctx.font=`700 ${sz*.9}px 'Barlow Condensed',sans-serif`;ctx.fillStyle=r.hl?C.red:C.tealD;if(r.hl)shadowHalo();ctx.fillText(r.files,x0+colW*3,by+rowH*.6);clearShadow();
+  ctx.fillStyle=r.hl?C.gray:C.grayL;ctx.fillText(r.pct,x0+colW*4,by+rowH*.6);ctx.globalAlpha=a;});
+  if(pp>.75)mono('Japan NTA 2022 | UK HMRC | Denmark SKAT | ATO Australia | OECD Tax Admin 2023 · VER',x0,y0+rows.length*rowH+H*.04,{alpha:.4,sz:clamp(H*.011,7,10)});
+  ctx.restore();}}
+
+  // PHASE 6: Industry stats 64–80s — SRT #164 @ cs≈64.4; ends exactly when policy SRT #169 arrives cs≈80
+  {const a=phA(cs,64.0,80.0,.5);if(a>0){ctx.save();ctx.globalAlpha=a;draw2StatBoxes('6.5B HOURS','Americans spend/yr on federal tax compliance','$15.4 BILLION','annual tax prep industry revenue',C.amberD,C.red,1);
+  ctx.globalAlpha=a*apR(cs,66.5);mono('IRS Paperwork Burden Report · IBIS World Tax Prep 2023 · VER',W*.5,H*CY_PH+H*.12,{align:'center',alpha:.42,sz:clamp(H*.011,7,10)});
+  if(cs>=72.0){const ba=ease(clamp((cs-72.0)/2.5,0,1));const bY=H*CY_PH+H*.158;ctx.globalAlpha=a*ba;drawBrandBadge('TURBOTAX','Intuit · Tax Prep Software',W*.5-W*.16,bY,a*ba,C.amberD);drawBrandBadge('H&R BLOCK','In-person & Online Filing',W*.5+W*.16,bY,a*ba,C.red);}
+  mono('MPD · MONEY PATTERNS DECODED',W-24,H*.88,{align:'right',alpha:.60,sz:clamp(H*.012,7,11)});ctx.restore();}}
+
+  // PHASE 7: Policy decision conclusion 80–96.1s — SRT #169 @ cs≈80; strictly after phase 6
+  {const a=phA(cs,80.0,96.1,.5);if(a>0){ctx.save();ctx.globalAlpha=a;drawInfoCard(['NOT A TECHNICAL LIMITATION','that is a policy decision','the US is the only major OECD economy that has not','implemented automatic reconciliation'],W*.5,H*CY_PH,a,C.red);ctx.restore();}}
+}
+// ── CH7: Designed to Feel Good (91.3s) ───────────
+function animCh7(p,t){
+  const cs=currentSec-CHAPTERS[7].start;
+  // PHASE 1: Intro 0–12s → "so why does it still feel good? that's not an accident"
+  {const a=phA(cs,0,12.0,.4);if(a>0){ctx.save();ctx.globalAlpha=a;drawInfoCard(['DESIGNED TO FEEL GOOD','why does it still feel good even after you','understand what it is?','that\'s not an accident'],W*.5,H*CY_PH,a,C.amberD);ctx.restore();}}
+  // PHASE 2: Myth vs Reality 10–42s → belief/mechanism pairs
+  {const a=phA(cs,12.0,36.0,.5);if(a>0){const pp=ease(clamp((cs-12.0)/16,0,1));const pairs=[{belief:'Tax refund = BONUS MONEY',mech:'Your income · returned late · without interest'},{belief:'Big refund = good tax year',mech:'Large refund = significant over-withholding'}];const pairH=H*.14,y0=H*CY_PH-pairH*.9,panelW=W*.42,gap=W*.06,lx=W*.05,rx=W*.05+panelW+gap;ctx.save();ctx.globalAlpha=a;lbl('BELIEF',lx+panelW*.5,y0-H*.028,{align:'center',col:C.red,sz:clamp(H*.016,9,16),w:800});lbl('MECHANISM',rx+panelW*.5,y0-H*.028,{align:'center',col:C.teal,sz:clamp(H*.016,9,16),w:800});rule(lx,y0-H*.012,lx+panelW,C.red,1.5);rule(rx,y0-H*.012,rx+panelW,C.teal,1.5);pairs.forEach((pr,i)=>{const rowP=clamp(spring(Math.max(pp*3-i*.8,0)),0,1),by=y0+i*(pairH+H*.04),boxH=pairH*.82;ctx.globalAlpha=a*rowP;// Belief panel — solid paper fill then tint
+ctx.fillStyle=C.paper;rr(lx,by,panelW,boxH,4);ctx.fill();ctx.fillStyle='rgba(230,57,70,.05)';rr(lx,by,panelW,boxH,4);ctx.fill();ctx.strokeStyle=C.red;ctx.lineWidth=1.5;ctx.strokeRect(lx,by,panelW,boxH);const strikeAlpha=clamp((pp-.7)/.15,0,1),bsz=clamp(H*.020,9,20);const bLines=wrapText(pr.belief,panelW*.88,bsz,700);bLines.forEach((bl,li)=>{ctx.font=`700 ${bsz}px 'Barlow',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=C.red;shadowHalo();ctx.fillText(bl,lx+panelW*.5,by+boxH*.38+li*(bsz*1.3));clearShadow();if(strikeAlpha>0){ctx.globalAlpha=strikeAlpha*rowP*a;ctx.strokeStyle=C.red;ctx.lineWidth=1.5;const mw=ctx.measureText(bl).width;ctx.beginPath();ctx.moveTo(lx+panelW*.5-mw*.5,by+boxH*.38+li*(bsz*1.3)-bsz*.35);ctx.lineTo(lx+panelW*.5+mw*.5,by+boxH*.38+li*(bsz*1.3)-bsz*.35);ctx.stroke();ctx.globalAlpha=a*rowP;}});// Mechanism panel
+ctx.fillStyle=C.paper;rr(rx,by,panelW,boxH,4);ctx.fill();ctx.fillStyle='rgba(45,184,157,.06)';rr(rx,by,panelW,boxH,4);ctx.fill();ctx.strokeStyle=C.teal;ctx.lineWidth=1.5;ctx.strokeRect(rx,by,panelW,boxH);const msz=clamp(H*.018,8,18);const mLines=wrapText(pr.mech,panelW*.88,msz,700);mLines.forEach((ml,li)=>{ctx.font=`700 ${msz}px 'Barlow',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=C.tealD;shadowHalo();ctx.fillText(ml,rx+panelW*.5,by+boxH*.38+li*(msz*1.3));clearShadow();});ctx.globalAlpha=a;});ctx.restore();}}
+  // PHASE 3: Mental accounting card 36–53s → "Thaler 1985 · same dollar feels different"
+  // SRT: Thaler named at cs≈36.5 — portrait card appears simultaneously
+  {const a=phA(cs,36.0,53.0,.5);if(a>0){ctx.save();ctx.globalAlpha=a;const pw=W*.58,ph=H*.30,px=W*.08,py=H*CY_PH-ph*.52;ctx.fillStyle=C.paper;rr(px,py,pw,ph,7);ctx.fill();ctx.fillStyle='rgba(42,37,32,.035)';rr(px,py,pw,ph,7);ctx.fill();ctx.strokeStyle=C.amberD;ctx.lineWidth=1.5;shadowHalo();rr(px,py,pw,ph,7);ctx.stroke();clearShadow();const tsz=clamp(H*.034,15,42);ctx.font=`900 ${tsz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=C.amberD;shadowHalo();ctx.fillText('MENTAL ACCOUNTING',px+pw*.5,py+H*.048);clearShadow();mono('Richard Thaler · 1985 · Nobel Prize Economics 2017',px+pw*.5,py+H*.076,{align:'center',alpha:.55,sz:clamp(H*.013,8,12)});const defs=[['The theory:','the same dollar FEELS different depending on how it arrives',C.ink2],['Applied:','a "refund" feels like bonus money — even though it\'s your income',C.ink2],['Result:','60–70% describe the refund check as a "bonus"',C.amberD]];const klx=px+H*.02,vlx=px+pw*.30;defs.forEach(([k,v,vc],i)=>{ctx.globalAlpha=a*apR(cs,36.5+i*1.5);lbl(k,klx,py+H*.104+i*H*.062,{col:C.grayL,sz:clamp(H*.016,8,16),w:500});const maxVW=pw*.65;const vLines=wrapText(v,maxVW,clamp(H*.018,8,18),700);vLines.forEach((vl,li)=>{lbl(vl,vlx,py+H*.104+i*H*.062+li*(clamp(H*.018,8,18)*1.25),{col:vc,sz:clamp(H*.018,8,18),w:700});});});ctx.restore();
+  // Thaler portrait card — appears right when SRT names him
+  const a2=phA(cs,36.5,53.0,.5);if(a2>0){const sp=spring(apR(cs,36.5,.55));ctx.save();ctx.globalAlpha=a2*sp;drawPersonCard('thaler','Richard Thaler','Nobel Prize Economics 2017','Mental Accounting · 1985',W*.85,H*CY_PH,a2*sp,C.amberD);ctx.restore();}}}
+  // PHASE 4a: Loss aversion stat boxes 53–62s → "Kahneman Tversky · 2x harder to avoid a loss"
+  // SRT: Kahneman & Tversky named at cs≈53.5 (SRT 186 @ 10:01.866 → 562.166+53.5=615.7s)
+  // draw2StatBoxes spans W*.12–W*.88; portraits (cw~W*.20) placed AFTER in Phase 4b to prevent overlap.
+  {const a=phA(cs,53.0,62.0,.5);if(a>0){ctx.save();ctx.globalAlpha=a;draw2StatBoxes('2×','harder to avoid loss than achieve gain','60–70%','describe refund as a "bonus"',C.red,C.amberD,1);ctx.globalAlpha=a*apR(cs,54.0);lbl('Kahneman & Tversky · Loss Aversion · Prospect Theory 1979',W*.5,H*CY_PH+H*.12,{align:'center',col:C.gray,sz:clamp(H*.018,9,18)});lbl('Withholding converts monthly losses into a once-a-year WIN',W*.5,H*CY_PH+H*.148,{align:'center',col:C.grayL,sz:clamp(H*.016,8,16)});mono('Kahneman & Tversky 1979 · Prospect Theory | Thaler 1985 · Mental Accounting · VER',W*.5,H*CY_PH+H*.176,{align:'center',alpha:.4,sz:clamp(H*.011,7,10)});ctx.restore();}}
+  // PHASE 4b: Kahneman + Tversky portrait cards 62–70s — standalone visual after stat boxes clear.
+  // OVERLAP GUARD: no competing wide elements active in this window.
+  // Cards placed left/right of centre: Kahneman at W*.30, Tversky at W*.70 — symmetric, within safe margins.
+  // Each card cw≈W*.20; gap between cards ≈ W*.40. No horizontal overlap with each other.
+  {const a=phA(cs,62.0,70.0,.5);if(a>0){const sp=spring(apR(cs,62.0,.6));const sp2=spring(apR(cs,63.0,.6));ctx.save();
+  // Label above both cards
+  ctx.globalAlpha=a*sp;const lsz=clamp(H*.022,10,22);lbl('THE ARCHITECTS OF LOSS AVERSION',W*.5,H*(CY_PH-0.19),{align:'center',col:C.red,sz:lsz,w:800});
+  ctx.globalAlpha=a*sp;drawPersonCard('kahneman','D. Kahneman','Prospect Theory · 1979','Nobel Prize Econ 2002',W*.30,H*CY_PH,a*sp,C.red);
+  ctx.globalAlpha=a*sp2;drawPersonCard('tversky','A. Tversky','Loss Aversion · 1979','Prospect Theory 1979',W*.70,H*CY_PH,a*sp2,C.red);
+  ctx.globalAlpha=a*apR(cs,64.5);lbl('"people work ~2× as hard to avoid a loss as to achieve an equivalent gain"',W*.5,H*(CY_PH+0.16),{align:'center',col:C.gray,sz:clamp(H*.017,8,17)});mono('Kahneman & Tversky · Prospect Theory 1979 · VER',W*.5,H*(CY_PH+0.19),{align:'center',alpha:.4,sz:clamp(H*.011,7,10)});ctx.restore();}}
+  // PHASE 5: Conclusion 70–91.3s → "you were never irrational · responding to a stimulus engineered to produce exactly that response"
+  {const a=phA(cs,70.0,91.4,.5);if(a>0){ctx.save();ctx.globalAlpha=a;const ap=spring(apR(cs,70.0,.7));const sz=clamp(H*.050,22,62);ctx.font=`900 ${sz}px 'Barlow Condensed',sans-serif`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=C.teal;shadowHalo();ctx.globalAlpha=a*ap;ctx.fillText('YOU WERE NEVER IRRATIONAL',W*.5,H*CY_PH-sz*.75);clearShadow();
+        // Sub-line spacing based on sub-label font size (26px), not headline sz — avoids overlap
+        const _sub1sz=clamp(H*.026,12,26),_sub2sz=clamp(H*.024,11,24);
+        const _hl_bottom=H*CY_PH-sz*.75+sz*.25;       // baseline + descender clearance
+        const _s1y=_hl_bottom+_sub1sz*1.30;            // sub1: 1.3× sub-font below headline bottom
+        const _s2y=_s1y+_sub1sz*1.50;                  // sub2: 1.5× sub-font below sub1 baseline
+        const _ry=_s2y+_sub2sz*0.95;                   // rule: ~1 sub-font below sub2
+        const _s3y=_ry+_sub2sz*1.55;                   // sub3: 1.55× sub-font below rule
+        ctx.globalAlpha=a*apR(cs,71.0);lbl('you were responding to a stimulus',W*.5,_s1y,{align:'center',col:C.gray,sz:_sub1sz});
+        ctx.globalAlpha=a*apR(cs,72.0);lbl('engineered to produce exactly that response',W*.5,_s2y,{align:'center',col:C.ink2,sz:_sub2sz});
+        ctx.globalAlpha=a*apR(cs,74.0);rule(W*.22,_ry,W*.78,C.ink2,1);lbl('the system working exactly as intended',W*.5,_s3y,{align:'center',col:C.amberD,sz:_sub2sz,w:700});ctx.restore();}}
+}
+// ── CH8: Fix It in 10 Minutes (143.1s) ───────────
+function animCh8(p,t){
+  const cs=currentSec-CHAPTERS[8].start;
+  // PHASE 1: Fixable intro 0–10s
+  {const a=phA(cs,0,10.0,.4);if(a>0){const sp=spring(apR(cs,0,.6));const sz=clamp(H*.10,44,125)*sp;ctx.save();ctx.globalAlpha=a;stat('FIXABLE',W*.5,H*CY_PH,C.teal,sz);ctx.globalAlpha=a*apR(cs,.8);lbl('in less than 10 minutes',W*.5,H*CY_PH+sz*.50,{align:'center',col:C.gray,sz:clamp(H*.024,11,24),w:700});lbl('one form · one free government tool · four steps',W*.5,H*CY_PH+sz*.76,{align:'center',col:C.grayL,sz:clamp(H*.019,9,19)});ctx.restore();}}
+  // PHASE 2: 4-step W-4 flow 10–46s → steps 1-4 box flow
+  // SRT: "irs.gov/W4App" mentioned at cs≈73.5 relative to Ch8 start
+  {const a=phA(cs,10.0,46.0,.5);if(a>0){const steps=[{num:'01',lbl:'Get Pay Stub',sub:'most recent'},{num:'02',lbl:'irs.gov/W4App',sub:'free · no login'},{num:'03',lbl:'Update W-4',sub:'Step 4(c) line'},{num:'04',lbl:'Submit to HR',sub:'1–2 pay periods'}];const n=steps.length,boxW=clamp(W*.14,90,160),boxH=H*.115;const totalW=boxW*n+H*.05*(n-1),x0=(W-totalW)/2,y0=H*CY_PH-boxH*.5-H*.02;ctx.save();ctx.globalAlpha=a;steps.forEach((s,i)=>{const sp=spring(clamp((cs-10.0)*0.5-i*.5,0,1));if(sp<.01)return;const bx=x0+i*(boxW+H*.05);ctx.save();ctx.globalAlpha=a*sp;ctx.fillStyle='rgba(45,184,157,.07)';rr(bx,y0,boxW,boxH,6);ctx.fill();ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=2.5;rr(bx,y0,boxW,boxH,6);ctx.stroke();ctx.strokeStyle=C.teal;ctx.lineWidth=1.8;shadowHalo();rr(bx,y0,boxW,boxH,6);ctx.stroke();clearShadow();const nsz=clamp(H*.032,14,32);ctx.font=`900 ${nsz}px 'DM Mono',monospace`;ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle=C.teal;shadowHalo();ctx.fillText(s.num,bx+boxW*.5,y0+H*.035);clearShadow();const lsz=clamp(H*.026,11,24);ctx.font=`900 ${lsz}px 'Barlow Condensed',sans-serif`;ctx.fillStyle=C.ink;ctx.fillText(s.lbl,bx+boxW*.5,y0+H*.076);lbl(s.sub,bx+boxW*.5,y0+boxH*.88,{align:'center',col:C.gray,sz:clamp(H*.015,8,14)});if(i<n-1)arrow(bx+boxW+H*.013,y0+boxH*.5,clamp(H*.022,8,18),C.tealD,'right');ctx.restore();});
+  // IRS.gov website card appears when step 2 becomes visible (~cs=11.5s)
+  if(cs>=11.5){const ira=ease(clamp((cs-11.5)/2.5,0,1));const iriW=clamp(W*.26,140,260),iriH=clamp(H*.065,32,62),irix=x0+boxW+H*.05,iriy=y0+boxH+H*.025;ctx.globalAlpha=a*ira;ctx.fillStyle='rgba(45,184,157,.08)';rr(irix,iriy,iriW,iriH,5);ctx.fill();ctx.strokeStyle=C.teal;ctx.lineWidth=1.2;shadowHalo();rr(irix,iriy,iriW,iriH,5);ctx.stroke();clearShadow();mono('🔗',irix+H*.018,iriy+iriH*.5,{alpha:.7,sz:clamp(H*.020,10,18)});const usz=clamp(H*.018,9,18);ctx.font=`700 ${usz}px 'DM Mono',monospace`;ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillStyle=C.tealD;shadowHalo();ctx.fillText('irs.gov/W4App',irix+H*.038,iriy+iriH*.38);clearShadow();lbl('IRS Tax Withholding Estimator · Free',irix+H*.038,iriy+iriH*.74,{col:C.gray,sz:clamp(H*.013,7,12)});}
+  ctx.restore();}}
+  // PHASE 3: Wash zone 46–70s
+  {const a=phA(cs,46.0,64.0,.5);if(a>0){const boxW=clamp(W*.14,90,160),boxH=H*.115,n=4;const totalW=boxW*n+H*.05*(n-1),x0=(W-totalW)/2,y0=H*CY_PH-boxH*.5-H*.02,wy=y0+boxH+H*.055;ctx.save();ctx.globalAlpha=a;ctx.fillStyle='rgba(45,184,157,.08)';ctx.fillRect(W*.12,wy,W*.76,H*.08);ctx.strokeStyle=C.teal;ctx.lineWidth=1.5;shadowHalo();ctx.strokeRect(W*.12,wy,W*.76,H*.08);clearShadow();lbl('TARGET: $200–$500 REFUND',W*.5,wy+H*.028,{align:'center',col:C.tealD,sz:clamp(H*.022,10,22),w:700});lbl('THE WASH ZONE — avoid penalties · stop over-paying',W*.5,wy+H*.055,{align:'center',col:C.gray,sz:clamp(H*.016,8,15)});mono('IRS Publication 505 · VER | Tax professional consensus · ATT',W*.5,wy+H*.072,{align:'center',alpha:.4,sz:clamp(H*.011,7,10)});ctx.restore();}}
+  // PHASE 4: $264/month payback 64–95s
+  {const a=phA(cs,64.0,88.0,.5);if(a>0){const sp=spring(apR(cs,64.0,.65));const sz=clamp(H*.10,44,125)*sp;ctx.save();ctx.globalAlpha=a;stat('$264/MONTH',W*.5,H*CY_PH,C.amberD,sz);ctx.globalAlpha=a*apR(cs,65.0);lbl('working for you — not the government',W*.5,H*CY_PH+sz*.52,{align:'center',col:C.gray,sz:clamp(H*.022,10,22),w:700});ctx.globalAlpha=a*apR(cs,67.0);lbl('comes back into your paycheck within 1–2 pay periods',W*.5,H*CY_PH+sz*.76,{align:'center',col:C.grayL,sz:clamp(H*.018,9,18)});ctx.restore();}}
+  // PHASE 5: HYSA options 88–122s → "$155 HYSA · $662 CC savings · etc"
+  {const a=phA(cs,88.0,116.0,.5);if(a>0){ctx.save();ctx.globalAlpha=a;draw2StatBoxes('$155/YEAR','HYSA at 4.9% · $264/mo · earned passively','OR ~$662','applied to credit card interest savings',C.teal,C.amberD,1);ctx.globalAlpha=a*apR(cs,90.5);lbl('or: emergency fund · debt payoff · index fund contribution',W*.5,H*CY_PH+H*.12,{align:'center',col:C.gray,sz:clamp(H*.019,9,19)});lbl('"the point is that it\'s working for you"',W*.5,H*CY_PH+H*.148,{align:'center',col:C.tealD,sz:clamp(H*.022,10,22),w:700});mono('HYSA national avg ~4.9% · FDIC insured accounts 2024 · EST',W*.5,H*CY_PH+H*.174,{align:'center',alpha:.4,sz:clamp(H*.011,7,10)});ctx.restore();}}
+  // PHASE 6: Channel close 116–143.1s
+  {const a=phA(cs,116.0,143.2,.5);if(a>0){ctx.save();ctx.globalAlpha=a;drawChannelCard(1,H*CY_PH);ctx.globalAlpha=a*apR(cs,118.5);const nwy=H*CY_PH+H*.18,nww=W*.64,nwx=W*.18,nwh=H*.095;ctx.fillStyle=C.paper;rr(nwx,nwy,nww,nwh,5);ctx.fill();ctx.fillStyle='rgba(230,57,70,.06)';rr(nwx,nwy,nww,nwh,5);ctx.fill();ctx.strokeStyle=C.red;ctx.lineWidth=1.5;shadowHalo();rr(nwx,nwy,nww,nwh,5);ctx.stroke();clearShadow();lbl('NEXT WEEK',W*.5,nwy+H*.026,{align:'center',col:C.red,sz:clamp(H*.016,8,16),w:800});// wrap long title inside box
+const titleLines=wrapText('Credit Card Rewards — who they\'re actually designed to benefit',nww*.88,clamp(H*.018,9,18),700);titleLines.forEach((tl,li)=>{lbl(tl,W*.5,nwy+H*.054+li*(clamp(H*.018,9,18)*1.2),{align:'center',col:C.ink2,sz:clamp(H*.018,9,18),w:700});});mono('MPD · MONEY PATTERNS DECODED',W-24,H*.88,{align:'right',alpha:.65,sz:clamp(H*.013,8,12)});ctx.restore();}}
+}
+// ── CENTER PHRASE ─────────────────────────────────
+function drawCenterPhrase(ci,p){
+  PHRASES[ci].forEach(([ps,pe,big,sub])=>{
+    if(p<ps||p>=pe)return;
+    const range=pe-ps,local=(p-ps)/range;
+    let al=1;if(local<.12)al=local/.12;else if(local>.88)al=(1-local)/.12;al=clamp(al,0,1);
+    if(ci===4&&p>=.38&&p<=.68)return;
+    const cy=H*CP_Y;
+    // Pill badge style — small, labelled, never competing with main stat
+    const bsz=clamp(H*.030,14,32),ssz=clamp(H*.016,8,17);
+    const bigW=ctx.measureText(big).width; // rough measure after setting font below
+    ctx.save();ctx.globalAlpha=al;
+    // Measure text width to size pill
+    ctx.font=`900 ${bsz}px 'Barlow Condensed',sans-serif`;
+    const tw=ctx.measureText(big).width;
+    const pw=tw+clamp(H*.04,18,36),ph=bsz*1.55,px=W/2-pw/2,py=cy-ph*.65;
+    // Pill background
+    ctx.fillStyle='rgba(45,184,157,.10)';rr(px,py,pw,ph,ph/2);ctx.fill();
+    ctx.strokeStyle=C.teal;ctx.lineWidth=1;ctx.globalAlpha=al*.45;
+    rr(px,py,pw,ph,ph/2);ctx.stroke();
+    ctx.globalAlpha=al;
+    // Big text — teal, condensed, inside pill
+    ctx.font=`900 ${bsz}px 'Barlow Condensed',sans-serif`;
+    ctx.textAlign='center';ctx.textBaseline='alphabetic';
+    ctx.fillStyle=C.teal;shadowHalo();ctx.fillText(big,W*.5,py+ph*.72);clearShadow();
+    // Sub text — below pill
+    lbl(sub,W*.5,py+ph+clamp(H*.016,7,14),{align:'center',col:C.gray,sz:ssz});
+    ctx.restore();
+  });
+}
+// ══════════════════════════════════════════════════════════════════
+// BACKGROUND MUSIC ENGINE — Web Audio API, fully embedded, no files
+// Each chapter has a unique ambient pad score built from oscillators.
+// Music is procedurally generated — no samples, no external assets.
+// ══════════════════════════════════════════════════════════════════
+
+// Per-chapter musical config
+// freqs    : chord tone frequencies (Hz) for pad oscillators
+// bass     : root bass frequency (Hz)
+// filterHz : low-pass cutoff — higher = brighter, lower = warmer
+// lfoRate  : filter LFO speed (Hz) — creates gentle harmonic movement
+// lfoDepth : filter LFO depth (Hz sweep range)
+// vol      : chapter master gain (keep subtle — voiceover must be audible)
+const MUSIC_CONFIG=[
+  // Ch0 - The Celebration — Dm6, ambiguous (celebration with a question mark)
+  {freqs:[146.83,220.00,246.94,293.66],bass:73.41, filterHz:520,lfoRate:0.22,lfoDepth:80, vol:0.14},
+  // Ch1 - Bigger Every Year — Gmaj, neutral and flowing
+  {freqs:[196.00,246.94,293.66,392.00],bass:98.00, filterHz:680,lfoRate:0.28,lfoDepth:100,vol:0.13},
+  // Ch2 - Emergency. Never Ended — Am, grave and historical
+  {freqs:[110.00,164.81,220.00,261.63],bass:55.00, filterHz:460,lfoRate:0.18,lfoDepth:70, vol:0.15},
+  // Ch3 - Your Money's Other Job — Cmaj7, curious and investigative
+  {freqs:[130.81,164.81,196.00,246.94],bass:65.41, filterHz:600,lfoRate:0.32,lfoDepth:90, vol:0.13},
+  // Ch4 - The 30-Year Number — Fmaj7, building revelation
+  {freqs:[174.61,220.00,261.63,329.63],bass:87.31, filterHz:740,lfoRate:0.26,lfoDepth:110,vol:0.16},
+  // Ch5 - Same Trap, Three Forms — Em, pattern recognition
+  {freqs:[164.81,196.00,246.94,329.63],bass:82.41, filterHz:580,lfoRate:0.30,lfoDepth:85, vol:0.13},
+  // Ch6 - 95% Never File — Bbmaj, expansive and global
+  {freqs:[116.54,174.61,233.08,293.66],bass:58.27, filterHz:660,lfoRate:0.20,lfoDepth:95, vol:0.14},
+  // Ch7 - Designed to Feel Good — Dm(add9), unsettling and analytical
+  {freqs:[146.83,174.61,220.00,329.63],bass:73.41, filterHz:500,lfoRate:0.16,lfoDepth:75, vol:0.14},
+  // Ch8 - Fix It in 10 Minutes — Emaj, positive and actionable
+  {freqs:[164.81,207.65,246.94,329.63],bass:82.41, filterHz:820,lfoRate:0.38,lfoDepth:120,vol:0.15},
+];
+
+let _aCtx=null,_masterGain=null,_muteGain=null,_reverbSend=null;
+let _currentLayer=null,_musicMuted=false,_musicReady=false,_lastMusicCi=-1;
+
+// Generate a decaying-noise impulse response for convolution reverb
+function _buildImpulse(sr,dur,decay){
+  const len=Math.round(sr*dur),buf=_aCtx.createBuffer(2,len,sr);
+  for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);}
+  return buf;
+}
+
+function initMusicEngine(){
+  if(_musicReady)return;
+  try{
+    _aCtx=new(window.AudioContext||window.webkitAudioContext)();
+    // Master signal chain: masterGain → compressor → muteGain → destination
+    _masterGain=_aCtx.createGain();_masterGain.gain.value=1.0;
+    const comp=_aCtx.createDynamicsCompressor();
+    comp.threshold.value=-16;comp.knee.value=6;comp.ratio.value=4;
+    comp.attack.value=0.04;comp.release.value=0.22;
+    _muteGain=_aCtx.createGain();_muteGain.gain.value=1.0;
+    // Convolution reverb (large hall, 2.8s decay) — adds spatial depth
+    const conv=_aCtx.createConvolver();
+    conv.buffer=_buildImpulse(_aCtx.sampleRate,2.8,3.0);
+    const revGain=_aCtx.createGain();revGain.gain.value=0.18; // 18% wet
+    _reverbSend=_aCtx.createGain();_reverbSend.gain.value=0.6;
+    _masterGain.connect(comp);
+    _masterGain.connect(_reverbSend);
+    _reverbSend.connect(conv);conv.connect(revGain);revGain.connect(comp);
+    comp.connect(_muteGain);_muteGain.connect(_aCtx.destination);
+    _musicReady=true;
+  }catch(e){console.warn('Web Audio not available:',e);}
+}
+
+// Create one oscillator with soft attack envelope
+function _osc(freq,type,detune,vol,attackS){
+  const o=_aCtx.createOscillator(),g=_aCtx.createGain();
+  o.type=type;o.frequency.value=freq;o.detune.value=detune||0;
+  g.gain.setValueAtTime(0,_aCtx.currentTime);
+  g.gain.linearRampToValueAtTime(vol,_aCtx.currentTime+(attackS||2.2));
+  o.connect(g);o.start();return{o,g};
+}
+
+// Build a complete chapter audio layer
+// Returns: { nodes[], gainNode, filter } — caller must store to clean up later
+function _buildLayer(ci){
+  const cfg=MUSIC_CONFIG[ci];
+  // Layer gain → master
+  const layerGain=_aCtx.createGain();layerGain.gain.value=0; // starts silent, faded in by caller
+  layerGain.connect(_masterGain);
+  // Warm low-pass filter
+  const filt=_aCtx.createBiquadFilter();filt.type='lowpass';
+  filt.frequency.value=cfg.filterHz;filt.Q.value=0.9;
+  filt.connect(layerGain);
+  // LFO → filter frequency (gentle harmonic movement)
+  const lfo=_aCtx.createOscillator(),lfoG=_aCtx.createGain();
+  lfo.type='sine';lfo.frequency.value=cfg.lfoRate;lfoG.gain.value=cfg.lfoDepth;
+  lfo.connect(lfoG);lfoG.connect(filt.frequency);lfo.start();
+  const nodes=[lfo];
+  // Pad — 3 detuned sines per chord tone (centre ±7 cents) for warm chorus
+  cfg.freqs.forEach(f=>{
+    [0,7,-7].forEach((det,di)=>{
+      const {o,g}=_osc(f,'sine',det,di===0?0.20:0.08,2.5+(di*0.4));
+      g.connect(filt);nodes.push(o,g);
+    });
+  });
+  // Bass — sine + sub-octave triangle for body
+  const {o:bo,g:bg}=_osc(cfg.bass,'sine',0,0.28,3.2);bg.connect(layerGain);nodes.push(bo,bg);
+  const {o:so,g:sg}=_osc(cfg.bass*0.5,'triangle',0,0.12,3.8);sg.connect(layerGain);nodes.push(so,sg);
+  // Shimmer — very high harmonic, barely audible, adds air
+  const {o:sho,g:shg}=_osc(cfg.freqs[cfg.freqs.length-1]*4,'sine',0,0.028,5.0);shg.connect(filt);nodes.push(sho,shg);
+  return{nodes,gainNode:layerGain,filter:filt};
+}
+
+// Crossfade from current layer to a new chapter layer
+function setChapterMusic(ci){
+  if(!_musicReady||!playing)return;
+  const t=_aCtx.currentTime,OUT=2.2,IN=3.0;
+  // Fade out and schedule cleanup of old layer
+  if(_currentLayer){
+    const old=_currentLayer;
+    old.gainNode.gain.setValueAtTime(old.gainNode.gain.value,t);
+    old.gainNode.gain.linearRampToValueAtTime(0,t+OUT);
+    setTimeout(()=>old.nodes.forEach(n=>{try{n.stop?n.stop():n.disconnect();}catch(e){}}),(OUT+0.8)*1000);
+  }
+  // Build new layer and fade it in
+  const layer=_buildLayer(ci);
+  layer.gainNode.gain.setValueAtTime(0,t);
+  layer.gainNode.gain.linearRampToValueAtTime(MUSIC_CONFIG[ci].vol,t+IN);
+  _currentLayer=layer;
+}
+
+function _pauseMusicFade(){
+  if(!_musicReady||!_currentLayer)return;
+  const t=_aCtx.currentTime;
+  _currentLayer.gainNode.gain.setValueAtTime(_currentLayer.gainNode.gain.value,t);
+  _currentLayer.gainNode.gain.linearRampToValueAtTime(0,t+1.0);
+}
+
+function _resumeMusicFade(ci){
+  if(!_musicReady)return;
+  if(_aCtx.state==='suspended')_aCtx.resume();
+  const cfg=MUSIC_CONFIG[ci];
+  if(!_currentLayer||_lastMusicCi!==ci){
+    // No layer yet or chapter mismatch — rebuild
+    if(_currentLayer){_currentLayer.nodes.forEach(n=>{try{n.stop?n.stop():n.disconnect();}catch(e){}});_currentLayer=null;}
+    _lastMusicCi=ci;
+    const layer=_buildLayer(ci);
+    layer.gainNode.gain.setValueAtTime(0,_aCtx.currentTime);
+    layer.gainNode.gain.linearRampToValueAtTime(cfg.vol,_aCtx.currentTime+2.0);
+    _currentLayer=layer;
+  }else{
+    // Resume existing layer
+    const t=_aCtx.currentTime;
+    _currentLayer.gainNode.gain.setValueAtTime(0,t);
+    _currentLayer.gainNode.gain.linearRampToValueAtTime(cfg.vol,t+1.5);
+  }
+}
+
+function toggleMuteMusic(){
+  _musicMuted=!_musicMuted;
+  if(_muteGain){
+    const t=_aCtx?_aCtx.currentTime:0;
+    _muteGain.gain.setValueAtTime(_muteGain.gain.value,t);
+    _muteGain.gain.linearRampToValueAtTime(_musicMuted?0:1,t+0.5);
+  }
+  document.getElementById('musicbtn').textContent=_musicMuted?'MUSIC OFF':'♪ MUSIC';
+}
+
+// ── RENDER ────────────────────────────────────────
+const ANIM_FNS=[animCh0,animCh1,animCh2,animCh3,animCh4,animCh5,animCh6,animCh7,animCh8];
+function curCi(){let ci=0;for(let i=CHAPTERS.length-1;i>=0;i--){if(currentSec>=CHAPTERS[i].start){ci=i;break;}}return ci;}
+function chP(ci){return clamp((currentSec-CHAPTERS[ci].start)/(CHAPTERS[ci].end-CHAPTERS[ci].start),0,1);}
+function animT(){return EXPORTING?(currentSec*LOOP_FPS)%999999:((Date.now()/1000*LOOP_FPS)%999999);}
+function render(){
+  if(!EXPORTING)requestAnimationFrame(render);
+  drawPaper();
+  drawParticles();
+  const ci=curCi(),p=chP(ci),t=animT();
+  const cs0=currentSec-CHAPTERS[0].start;
+  const cs8=currentSec-CHAPTERS[8].start;
+  const isCardScreen=(ci===0&&cs0<2.8)||(ci===8&&cs8>=116.0);
+  if(!isCardScreen)drawGrid();
+  ANIM_FNS[ci](p,t,W,H);
+  if(!(ci===0&&(currentSec-CHAPTERS[0].start)<2.8))drawCenterPhrase(ci,p);
+  drawLowerThird(ci);
+  drawVignette();
+  drawChapterFade(ci);
+  updateUI(ci,p);
+}
+// ── PLAYBACK ──────────────────────────────────────
+let currentSec=0,playing=false,lastTs=null,playSpeed=1;
+const SPEEDS=[1,2,4,8];
+function cycleSpeed(){const idx=SPEEDS.indexOf(playSpeed);playSpeed=SPEEDS[(idx+1)%SPEEDS.length];document.getElementById('speedbtn').textContent=playSpeed+'× SPEED';}
+function tick(ts){if(!playing){lastTs=null;return;}if(lastTs!==null)currentSec=Math.min(currentSec+(ts-lastTs)/1000*playSpeed,TOTAL_DUR);lastTs=ts;if(currentSec>=TOTAL_DUR){playing=false;currentSec=TOTAL_DUR;document.getElementById('playbtn').textContent='▶ PLAY';}requestAnimationFrame(tick);}
+function togglePlay(){
+  playing=!playing;
+  document.getElementById('playbtn').textContent=playing?'⏸ PAUSE':'▶ PLAY';
+  if(playing){
+    requestAnimationFrame(tick);
+    // Initialise audio engine on first play (requires user gesture)
+    if(!_musicReady)initMusicEngine();
+    _resumeMusicFade(curCi());
+  }else{
+    _pauseMusicFade();
+  }
+}
+function gotoChapter(i){
+  currentSec=CHAPTERS[i].start;
+  if(playing&&_musicReady){_lastMusicCi=i;setChapterMusic(i);}
+}
+function toggleFS(){if(!document.fullscreenElement){document.documentElement.requestFullscreen();document.body.classList.add('fs');}else{document.exitFullscreen();document.body.classList.remove('fs');}}
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)document.body.classList.remove('fs');});
+function fmtTime(s){const m=Math.floor(s/60),sec=Math.floor(s%60);return `${m}:${String(sec).padStart(2,'0')}`;}
+function updateUI(ci,p){
+  document.getElementById('playtimer').textContent=`${fmtTime(currentSec)} / ${fmtTime(TOTAL_DUR)}`;
+  document.getElementById('vprog-fill').style.width=(currentSec/TOTAL_DUR*100)+'%';
+  document.querySelectorAll('.chbtn').forEach((btn,i)=>btn.classList.toggle('on',i===ci));
+  // Auto-crossfade music on chapter change during playback
+  if(playing&&_musicReady&&ci!==_lastMusicCi){_lastMusicCi=ci;setChapterMusic(ci);}
+}
+document.getElementById('vprog-wrap').addEventListener('click',e=>{const r=e.currentTarget.getBoundingClientRect();currentSec=(e.clientX-r.left)/r.width*TOTAL_DUR;});
+document.addEventListener('keydown',e=>{
+  if(e.key===' '){e.preventDefault();togglePlay();}
+  if(e.key==='f'||e.key==='F')toggleFS();
+  if(e.key==='e'||e.key==='E')openExport();
+  if(e.key==='a'||e.key==='A'){if(!EXPORTING)quickExportAll();}
+  if(e.key==='s'||e.key==='S')cycleSpeed();
+  if(e.key==='m'||e.key==='M'){if(!_musicReady&&playing)initMusicEngine();toggleMuteMusic();}
+  if(e.key>='1'&&e.key<='9'){const i=parseInt(e.key)-1;if(i<CHAPTERS.length)gotoChapter(i);}
+});
+// ── EXPORT ────────────────────────────────────────
+let EXPORTING=false;
+function openExport(){document.getElementById('exoverlay').classList.add('show');document.getElementById('expanel').classList.add('show');}
+function closeExport(){if(EXPORTING)return;document.getElementById('exoverlay').classList.remove('show');document.getElementById('expanel').classList.remove('show');}
+function buildExportUI(){
+  const list=document.getElementById('ex-chlist');list.innerHTML='';
+  CHAPTERS.forEach((ch,i)=>{
+    const dur=(ch.end-ch.start).toFixed(1);
+    const el=document.createElement('div');el.className='ex-ch';
+    const chk=document.createElement('input');chk.type='checkbox';chk.value=i;if(i===0){chk.checked=true;el.classList.add('sel-on');}
+    chk.addEventListener('change',()=>{el.classList.toggle('sel-on',chk.checked);updateExBtn();});
+    const num=document.createElement('span');num.className='ex-ch-num';num.textContent=`Ch${i+1}`;
+    const nm=document.createElement('span');nm.className='ex-ch-name';nm.textContent=ch.name;
+    const dv=document.createElement('span');dv.className='ex-ch-dur';dv.textContent=dur+'s';
+    el.appendChild(chk);el.appendChild(num);el.appendChild(nm);el.appendChild(dv);
+    el.addEventListener('click',e=>{if(e.target===chk)return;chk.checked=!chk.checked;el.classList.toggle('sel-on',chk.checked);updateExBtn();});
+    list.appendChild(el);
+  });
+  updateExBtn();
+}
+function selAllEx(all){document.querySelectorAll('.ex-ch input[type=checkbox]').forEach(cb=>{cb.checked=all;cb.closest('.ex-ch').classList.toggle('sel-on',all);});updateExBtn();}
+function updateExBtn(){
+  const n=document.querySelectorAll('.ex-ch input[type=checkbox]:checked').length;
+  const btn=document.getElementById('ex-start-btn');
+  btn.textContent=n>0?`Export ${n} Separate`:'No Chapters Selected';
+  btn.disabled=(n===0||EXPORTING);
+  const btnMerge=document.getElementById('ex-merge-btn');
+  if(btnMerge){btnMerge.textContent=n>0?`Merge ${n} → 1 File`:'No Chapters';btnMerge.disabled=(n===0||EXPORTING);}
+  const btnAll=document.getElementById('ex-exportall-btn');
+  if(btnAll)btnAll.disabled=EXPORTING;
+  const topAll=document.getElementById('exportallbtn');
+  if(topAll)topAll.disabled=EXPORTING;
+  const topMerge=document.getElementById('exportmergebtn');
+  if(topMerge)topMerge.disabled=EXPORTING;
+}
+
+// ── QUICK EXPORT SHORTCUTS (topbar) ──────────────────────────────────────────
+async function quickExportAll(){
+  openExport();selAllEx(true);
+  await new Promise(r=>setTimeout(r,120));
+  startExport(false);
+}
+async function quickExportCombined(){
+  openExport();selAllEx(true);
+  await new Promise(r=>setTimeout(r,120));
+  startExport(true);
+}
+
+// ── WEB WORKER TIMER ──────────────────────────────────────────────────────────
+// Workers are NOT throttled by browser background-tab policies (unlike main-thread
+// setTimeout). Frames therefore submit at correct wall-clock intervals even when
+// the user switches apps, preventing video duration drift.
+function makeTimerWorker(){
+  const code=`var t;self.onmessage=function(e){if(e.data.cmd==='start'){t=setInterval(function(){postMessage('tick');},e.data.ms);}else if(e.data.cmd==='stop'){clearInterval(t);}};`;
+  return new Worker(URL.createObjectURL(new Blob([code],{type:'application/javascript'})));
+}
+
+// ── SHARED FRAME DRAW (export) ────────────────────────────────────────────────
+// Centralises the render-order used by both single-chapter and combined-chapter
+// export loops so both stay in sync with the canonical render() order.
+function drawExportFrame(ci){
+  drawPaper();
+  drawParticles();
+  const _cs0=currentSec-CHAPTERS[0].start,_cs8=currentSec-CHAPTERS[8].start;
+  const _isCard=(ci===0&&_cs0<2.8)||(ci===8&&_cs8>=116.0);
+  if(!_isCard)drawGrid();
+  const p=chP(ci);
+  ANIM_FNS[ci](p,currentSec*LOOP_FPS,W,H);
+  if(!(ci===0&&_cs0<2.8))drawCenterPhrase(ci,p);
+  drawLowerThird(ci);
+  drawVignette();
+  drawChapterFade(ci);
+}
+
+// ── EXPORT SINGLE CHAPTER ────────────────────────────────────────────────────
+async function exportChapter(ci,resW,resH,fps,statusEl,progFill){
+  const ch=CHAPTERS[ci],dur=ch.end-ch.start;
+  const totalFrames=Math.round(dur*fps);
+  const frameDurMs=1000/fps;
+
+  canvas.width=resW;canvas.height=resH;W=resW;H=resH;paperCache=null;
+  const stream=canvas.captureStream(0);
+  const track=stream.getVideoTracks()[0];
+  const mimes=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4'];
+  let mime='video/webm';for(const m of mimes)if(MediaRecorder.isTypeSupported(m)){mime=m;break;}
+  const bitrates={2160:80e6,1080:22e6,720:9e6};
+  const mr=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:bitrates[resH]||22e6});
+  const chunks=[];
+  mr.ondataavailable=e=>{if(e.data&&e.data.size>0)chunks.push(e.data);};
+  mr.start(500);
+
+  let frameIndex=0;
+  const worker=makeTimerWorker();
+  await new Promise(resolve=>{
+    worker.onmessage=()=>{
+      if(frameIndex>=totalFrames){worker.postMessage({cmd:'stop'});resolve();return;}
+      currentSec=ch.start+frameIndex/fps;
+      drawExportFrame(ci);
+      track.requestFrame();
+      frameIndex++;
+      const pct=Math.round(frameIndex/totalFrames*100);
+      progFill.style.width=pct+'%';
+      if(statusEl)statusEl.textContent=`Ch${ci+1} — frame ${frameIndex}/${totalFrames} (${pct}%)`;
+    };
+    worker.postMessage({cmd:'start',ms:frameDurMs});
+  });
+
+  mr.stop();
+  await new Promise(r=>mr.onstop=r);
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;W=canvas.width;H=canvas.height;paperCache=null;
+
+  const ext=mime.includes('mp4')?'mp4':'webm';
+  const fname=`W${VIDEO_WEEK}_Ch${ci+1}_${TOPIC_SHORT}_${ch.short.replace(/[^A-Za-z0-9]/g,'')}_${dur.toFixed(1)}s.${ext}`;
+  const blob=new Blob(chunks,{type:mime});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=fname;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+
+// ── EXPORT ALL SELECTED AS ONE COMBINED FILE ──────────────────────────────────
+// Single MediaRecorder spans all chapters — chapters play back-to-back into one
+// continuous stream. Worker timer keeps frame submission accurate throughout.
+// Filename: W##_TopicShort_Ch1-Ch2-..._Combined_[totalDur]s.ext
+async function exportCombined(selected,resW,resH,fps,statusEl,progFill){
+  canvas.width=resW;canvas.height=resH;W=resW;H=resH;paperCache=null;
+  const stream=canvas.captureStream(0);
+  const track=stream.getVideoTracks()[0];
+  const mimes=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4'];
+  let mime='video/webm';for(const m of mimes)if(MediaRecorder.isTypeSupported(m)){mime=m;break;}
+  const bitrates={2160:80e6,1080:22e6,720:9e6};
+  const mr=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:bitrates[resH]||22e6});
+  const chunks=[];
+  mr.ondataavailable=e=>{if(e.data&&e.data.size>0)chunks.push(e.data);};
+  mr.start(500);
+
+  const frameDurMs=1000/fps;
+  const segments=selected.map(ci=>({ci,start:CHAPTERS[ci].start,frames:Math.round((CHAPTERS[ci].end-CHAPTERS[ci].start)*fps)}));
+  const totalFrames=segments.reduce((s,c)=>s+c.frames,0);
+  const totalDur=selected.reduce((s,ci)=>s+(CHAPTERS[ci].end-CHAPTERS[ci].start),0);
+
+  let globalFrame=0,segIdx=0,segFrame=0;
+  const worker=makeTimerWorker();
+  await new Promise(resolve=>{
+    worker.onmessage=()=>{
+      if(segIdx>=segments.length){worker.postMessage({cmd:'stop'});resolve();return;}
+      const {ci,start,frames}=segments[segIdx];
+      currentSec=start+segFrame/fps;
+      drawExportFrame(ci);
+      track.requestFrame();
+      segFrame++;globalFrame++;
+      if(segFrame>=frames){segIdx++;segFrame=0;}
+      const pct=Math.round(globalFrame/totalFrames*100);
+      progFill.style.width=pct+'%';
+      if(statusEl)statusEl.textContent=`Combined Ch${ci+1} — frame ${globalFrame}/${totalFrames} (${pct}%)`;
+    };
+    worker.postMessage({cmd:'start',ms:frameDurMs});
+  });
+
+  mr.stop();
+  await new Promise(r=>mr.onstop=r);
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;W=canvas.width;H=canvas.height;paperCache=null;
+
+  const ext=mime.includes('mp4')?'mp4':'webm';
+  const chLabels=selected.map(ci=>`Ch${ci+1}`).join('-');
+  const fname=`W${VIDEO_WEEK}_${TOPIC_SHORT}_${chLabels}_Combined_${totalDur.toFixed(1)}s.${ext}`;
+  const blob=new Blob(chunks,{type:mime});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=fname;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+
+async function startExport(combined){
+  const selected=[...document.querySelectorAll('.ex-ch input[type=checkbox]:checked')].map(cb=>parseInt(cb.value));
+  if(!selected.length)return;
+  const resH=parseInt(document.getElementById('ex-res').value);
+  const resW=Math.round(resH*16/9);
+  const fps=parseInt(document.getElementById('ex-fps').value);
+
+  EXPORTING=true;
+  const prog=document.getElementById('ex-progress');
+  const progFill=document.getElementById('ex-prog-fill');
+  const status=document.getElementById('ex-status');
+  prog.style.display='block';status.style.display='block';
+  document.getElementById('ex-start-btn').disabled=true;
+  document.getElementById('ex-close-btn').disabled=true;
+  const savedSec=currentSec;
+
+  if(combined){
+    if(status)status.textContent=`Combining ${selected.length} chapter${selected.length>1?'s':''}…`;
+    await exportCombined(selected,resW,resH,fps,status,progFill);
+  }else{
+    for(let k=0;k<selected.length;k++){
+      const ci=selected[k];
+      const ch=CHAPTERS[ci];
+      if(status)status.textContent=`[${k+1}/${selected.length}] Starting Ch${ci+1}: ${ch.name}…`;
+      await exportChapter(ci,resW,resH,fps,status,progFill);
+      if(k<selected.length-1){
+        if(status)status.textContent=`Ch${ci+1} done — waiting before next export…`;
+        await new Promise(r=>setTimeout(r,600));
+      }
+    }
+  }
+
+  currentSec=savedSec;
+  EXPORTING=false;
+  prog.style.display='none';
+  status.style.display='none';progFill.style.width='0';
+  document.getElementById('ex-start-btn').disabled=false;
+  document.getElementById('ex-close-btn').disabled=false;
+  ['ex-exportall-btn','ex-merge-btn','exportallbtn','exportmergebtn'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.disabled=false;
+  });
+  updateExBtn();
+  requestAnimationFrame(render);
+}
+
+// ── INIT ─────────────────────────────────────────
+function init(){
+  const chrow=document.getElementById('chrow');
+  CHAPTERS.forEach((ch,i)=>{
+    const btn=document.createElement('button');
+    btn.className='chbtn';btn.textContent=`Ch${i+1} · ${ch.name}`;
+    btn.onclick=()=>gotoChapter(i);chrow.appendChild(btn);
+  });
+  buildExportUI();
+  requestAnimationFrame(render);
+}
+init();
+</script>
+</body>
+</html>
